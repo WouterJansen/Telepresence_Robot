@@ -5,18 +5,22 @@ import java.awt.event.WindowEvent;
 
 public class InputReader{
 	
+	//Gui Elements
 	static JFrame frame;
 	static Box box = Box.createVerticalBox();
 	static JLabel line1;
 	static JLabel line2;
 	static JLabel line3;
 	static JLabel line4;
+	
+	//XboxC Elements
 	static XboxController xc;
     double mag = 0;
 	double dir = 0;
     double lmag = 0;
 	double rmag = 0;
 	
+	//Method to create the GUI
 	public static void WindowCreate(){
     	frame = new JFrame("Teleprecence Robot v1.0");
         line1 = new JLabel("Left Analog Magnitude:\n");
@@ -30,56 +34,11 @@ public class InputReader{
         frame.add(box);
         frame.setSize(new Dimension(320,120));
         frame.setLocationRelativeTo(null);
+        frame.setVisible(true);        
+
+        //displays cancel window on closing program
         frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        frame.setVisible(true);
-    }
-	
-    public InputReader(){
-    	xc = new XboxController();	        
-    	
-    	if (!xc.isConnected()){
-    		JOptionPane.showMessageDialog(null,"Xbox controller not connected.","Fatal error",JOptionPane.ERROR_MESSAGE);
-    		xc.release();
-    		return;
-    	}          	
-    	xc.setLeftThumbDeadZone(0.2);
-    	
-    	xc.addXboxControllerListener(new XboxControllerAdapter(){
-    		
-    		public void leftThumbMagnitude(double magnitude){
-    			mag = magnitude;
-    			line1.setText("Left Analog magnitude: " + mag + "\n");
-    		}
-
-    		public void leftThumbDirection(double direction){
-    			dir = direction;
-    			line2.setText("Left Analog Direction: " + dir + "\n");
-    		}   
-    		
-    		public void leftTrigger(double lmagnitude){
-    			lmag = lmagnitude;
-    			line3.setText("Left Trigger Magnitude: " + lmag + "\n");
-    		}
-
-    		public void rightTrigger(double rmagnitude){
-    			rmag = rmagnitude;
-    			line4.setText("Right Trigger Magnitude: " + rmag + "\n");
-    		}
-    		
-    		public void isConnected(boolean connected){
-    	        if (!connected)
-    	        	JOptionPane.showMessageDialog(null,"Xbox controller not connected.","Connection Lost",JOptionPane.ERROR_MESSAGE);
-    	        else
-    	        	JOptionPane.showMessageDialog(null,"Xbox controller connected.","Connected",JOptionPane.INFORMATION_MESSAGE);
-    	    }    		
-    	});
-	}
-    
-    public static void main(String[] args){
-    	new InputReader();
-    	WindowCreate();
-    	
-    	frame.addWindowListener(new java.awt.event.WindowAdapter() {
+        frame.addWindowListener(new java.awt.event.WindowAdapter() {
     		@Override
             public void windowClosing(WindowEvent e) {
                 int confirm = JOptionPane.showOptionDialog(frame,
@@ -92,7 +51,55 @@ public class InputReader{
                 }
             }
         });
+    }
+	
+	//Method to read in the Xbox Controller input
+    public InputReader(){
+    	
+    	xc = new XboxController();	   
+    	// Left thumb deadzone to mask small input by moving controller.
+    	xc.setLeftThumbDeadZone(0.2);
+    	
+    	//Listener for input of controller
+    	xc.addXboxControllerListener(new XboxControllerAdapter(){
+    		
+    		//listens to changes in the left thumbs magnitude reading
+    		public void leftThumbMagnitude(double magnitude){
+    			mag = magnitude;
+    			line1.setText("Left Analog magnitude: " + mag + "\n");
+    		}
+    		
+    		//listens to changes in the left thumbs direction reading
+    		public void leftThumbDirection(double direction){
+    			dir = direction;
+    			line2.setText("Left Analog Direction: " + dir + "\n");
+    		}   
+    		
+    		//listens to changes in the left triggers magnitude reading
+    		public void leftTrigger(double lmagnitude){
+    			lmag = lmagnitude;
+    			line3.setText("Left Trigger Magnitude: " + lmag + "\n");
+    		}
 
+    		//listens to changes in the right triggers magnitude reading
+    		public void rightTrigger(double rmagnitude){
+    			rmag = rmagnitude;
+    			line4.setText("Right Trigger Magnitude: " + rmag + "\n");
+    		}
+    		
+    		//listens to changes in the connection of the controller and displays messages on loss of connection or connecting restored.
+    		public void isConnected(boolean connected){
+    	        if (!connected)
+    	        	JOptionPane.showMessageDialog(null,"Xbox controller not connected.","Connection Lost",JOptionPane.ERROR_MESSAGE);
+    	        else
+    	        	JOptionPane.showMessageDialog(null,"Xbox controller connected.","Connected",JOptionPane.INFORMATION_MESSAGE);
+    	    }    		
+    	});
+	}
+    
+    public static void main(String[] args){
+    	new InputReader();
+    	WindowCreate();
     }
 }
     
