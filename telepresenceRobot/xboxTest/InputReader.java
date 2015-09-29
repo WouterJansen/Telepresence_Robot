@@ -13,7 +13,7 @@ public class InputReader{
 	static JLabel line3;
 	static JLabel line4;
 	
-	//XboxC Elements
+	//Xbox Controller Elements
 	static XboxController xc;
     double mag = 0;
 	double dir = 0;
@@ -22,17 +22,17 @@ public class InputReader{
 	
 	//Method to create the GUI
 	public static void WindowCreate(){
-    	frame = new JFrame("Teleprecence Robot v1.0");
-        line1 = new JLabel("Left Analog Magnitude:\n");
-        line2 = new JLabel("Left Analog Direction:\n");
-        line3 = new JLabel("Left Trigger Magnitude:\n");
-        line4 = new JLabel("Right Trigger Magnitude:\n");
+    	frame = new JFrame("Teleprecence Robot");
+        line1 = new JLabel("Left Analog Magnitude:0.0\n");
+        line2 = new JLabel("Left Analog Direction:0.0\n");
+        line3 = new JLabel("Left Trigger Magnitude:0.0\n");
+        line4 = new JLabel("Right Trigger Magnitude:0.0\n");
         box.add(line1);
         box.add(line2);
         box.add(line3);
         box.add(line4);
         frame.add(box);
-        frame.setSize(new Dimension(320,120));
+        frame.setSize(new Dimension(300,120));
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);        
 
@@ -65,25 +65,25 @@ public class InputReader{
     		
     		//listens to changes in the left thumbs magnitude reading
     		public void leftThumbMagnitude(double magnitude){
-    			mag = magnitude;
+    			mag = Math.round(magnitude * 100.0) / 100.0;
     			line1.setText("Left Analog magnitude: " + mag + "\n");
     		}
     		
     		//listens to changes in the left thumbs direction reading
     		public void leftThumbDirection(double direction){
-    			dir = direction;
+    			dir = Math.round(direction * 100.0) / 100.0;
     			line2.setText("Left Analog Direction: " + dir + "\n");
     		}   
     		
     		//listens to changes in the left triggers magnitude reading
     		public void leftTrigger(double lmagnitude){
-    			lmag = lmagnitude;
+    			lmag = Math.round(lmagnitude * 100.0) / 100.0;
     			line3.setText("Left Trigger Magnitude: " + lmag + "\n");
     		}
 
     		//listens to changes in the right triggers magnitude reading
     		public void rightTrigger(double rmagnitude){
-    			rmag = rmagnitude;
+    			rmag = Math.round(rmagnitude * 100.0) / 100.0;
     			line4.setText("Right Trigger Magnitude: " + rmag + "\n");
     		}
     		
