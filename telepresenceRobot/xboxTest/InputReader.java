@@ -1,14 +1,8 @@
 import ch.aplu.xboxcontroller.*;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
-
-import org.omg.CORBA.portable.InputStream;
-
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
-import java.awt.image.BufferedImage;
 
 public class InputReader{
 	
