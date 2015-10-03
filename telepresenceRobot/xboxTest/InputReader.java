@@ -69,25 +69,35 @@ public class InputReader{
         });
     }
 	
+	
+	//Updates the left & right wheel power based on the input
 	public static void updateSpeeds(){		
+		// if total outcome is forwards
 		if((rmag - lmag) > 0){
+			//right
 			if(dir > 0 && dir < 180 && mag > 0){
 				lwheel = Math.round((rmag - lmag) * 100.0) / 100.0;
 				rwheel = Math.round((1 -((rmag - lmag)*mag)) * 100.0) / 100.0;
+			//left
 			}else if (dir > 180 && dir < 359 && mag > 0){
 				lwheel = Math.round((1 -((rmag - lmag)*mag)) * 100.0) / 100.0;
 				rwheel = Math.round((rmag - lmag) * 100.0) / 100.0; ;
+			//forwards
 			}else{
 				lwheel = Math.round((rmag - lmag) * 100.0) / 100.0;;
 				rwheel = Math.round((rmag - lmag) * 100.0) / 100.0; ;
 			}
+	    // if total outcome is backwards
 		}else{					
+			//right
 			if(dir > 0 && dir < 180 && mag > 0){
 				lwheel = -Math.round((lmag - rmag) * 100.0) / 100.0;
 				rwheel = -Math.round((1 -((lmag - rmag)*mag)) * 100.0) / 100.0;
+			//left
 			}else if (dir > 180 && dir < 359 && mag > 0){
 				lwheel = -Math.round((1 -((lmag - rmag)*mag)) * 100.0) / 100.0;
 				rwheel = -Math.round((lmag - rmag) * 100.0) / 100.0; ;
+		    //backwards
 			}else{
 				lwheel = -Math.round((lmag - rmag) * 100.0) / 100.0;;
 				rwheel = -Math.round((lmag - rmag) * 100.0) / 100.0; ;
