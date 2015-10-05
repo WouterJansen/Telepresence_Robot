@@ -35,7 +35,7 @@ public class PiRobot {
 		
 		double acc = 0;
 		
-		if(wheel > 0 && wheelOld > 0){
+		if(wheel > 0 && wheelOld > 0){				//positieve waarden
 			if(wheel - wheelOld > 0){
 				if(wheel - wheelOld >= maximumAcc){
 					speed = maximumAcc;					
@@ -47,7 +47,7 @@ public class PiRobot {
 			}else if(wheel == wheelOld){
 				speed = wheel;
 			}
-		}else if(wheel < 0 && wheelOld < 0){
+		}else if(wheel < 0 && wheelOld < 0){		//negatieve waarden
 			if(wheel - wheelOld > 0){
 				if(wheel - wheelOld >= maximumAcc){
 					speed = maximumAcc;					
