@@ -1,8 +1,17 @@
 import ch.aplu.xboxcontroller.*;
+
 import javax.swing.*;
+
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
 
 public class InputReader{
 	
@@ -24,6 +33,7 @@ public class InputReader{
     static double lwheel = 0;
 	static double rwheel = 0;
 	static int direction = 0;
+	static int connections = 0;
 	
 	//Method to create the GUI
 	public static void WindowCreate(){
@@ -65,7 +75,7 @@ public class InputReader{
 	
 	
 	//Updates the left & right wheel power based on the input
-	public static void updateSpeeds(){		
+	public static void updateSpeeds() throws UnknownHostException, IOException{		
 		// if total outcome is forwards
 		if((rmag - lmag) > 0){
 			//right
@@ -81,6 +91,7 @@ public class InputReader{
 				lwheel = Math.round((rmag - lmag) * 100.0) / 100.0;
 				rwheel = Math.round((rmag - lmag) * 100.0) / 100.0;
 			}
+			TCPSend();
 	    // if total outcome is backwards
 		}else if(rmag - lmag < 0){					
 			//right
@@ -96,11 +107,28 @@ public class InputReader{
 				lwheel = -Math.round((lmag - rmag) * 100.0) / 100.0;
 				rwheel = -Math.round((lmag - rmag) * 100.0) / 100.0;
 			}
+			TCPSend();
 		// no acceleration but still using analog
 		}else{
 			lwheel = 0;
 			rwheel = 0;
+			TCPSend();
 		}
+	}
+	
+	public static void TCPSend() throws UnknownHostException, IOException{
+		
+		String speeds;				
+		//192.168.1.201
+		Socket clientSocket = new Socket();
+		clientSocket.connect(new InetSocketAddress("192.168.1.201", 6789));
+		DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
+		
+		speeds = lwheel + "," + rwheel;
+		outToServer.writeBytes(speeds + '\n');
+		System.out.println("Send:" + connections);
+		connections = connections + 1;
+		clientSocket.close();		
 	}
 	
 	
@@ -119,7 +147,12 @@ public class InputReader{
     		public void leftThumbMagnitude(double magnitude){
     			mag = Math.round(magnitude * 100.0) / 100.0;
     			line1.setText("Left Analog magnitude: " + mag + "\n");
-    			updateSpeeds();
+    			try {
+					updateSpeeds();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
     			line5.setText("Left Wheel Power: " + lwheel + "\n");
     			line6.setText("Right Wheel Power: " + rwheel + "\n");
     		}
@@ -128,7 +161,12 @@ public class InputReader{
     		public void leftThumbDirection(double direction){
     			dir = Math.round(direction * 100.0) / 100.0;
     			line2.setText("Left Analog Direction: " + dir + "\n");
-    			updateSpeeds();
+    			try {
+					updateSpeeds();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
     			line5.setText("Left Wheel Power: " + lwheel + "\n");
     			line6.setText("Right Wheel Power: " + rwheel + "\n");
     		}   
@@ -137,7 +175,12 @@ public class InputReader{
     		public void leftTrigger(double lmagnitude){
     			lmag = Math.round(lmagnitude * 100.0) / 100.0;
     			line3.setText("Left Trigger Magnitude: " + lmag + "\n");
-    			updateSpeeds();
+    			try {
+					updateSpeeds();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
     			line5.setText("Left Wheel Power: " + lwheel + "\n");
     			line6.setText("Right Wheel Power: " + rwheel + "\n");
     		}
@@ -146,7 +189,12 @@ public class InputReader{
     		public void rightTrigger(double rmagnitude){
     			rmag = Math.round(rmagnitude * 100.0) / 100.0;
     			line4.setText("Right Trigger Magnitude: " + rmag + "\n");
-    			updateSpeeds();
+    			try {
+					updateSpeeds();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
     			line5.setText("Left Wheel Power: " + lwheel + "\n");
     			line6.setText("Right Wheel Power: " + rwheel + "\n");
     		}
@@ -164,6 +212,50 @@ public class InputReader{
     public static void main(String[] args){
     	new InputReader();
     	WindowCreate();
+    	while(true){
+    		lmag = 1;
+    		try {
+				updateSpeeds();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    		lmag = 0;
+    		rmag = 1;
+    		try {
+				updateSpeeds();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    		rmag = 0;
+    		lmag = 1;
+    		mag = 0.5;
+    		dir = 90;
+    		try {
+				updateSpeeds();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    		mag = 1;
+    		dir = 90;
+    		try {
+				updateSpeeds();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    		mag = 0;
+    		dir = 0;
+    		rmag = 0;
+    		lmag = 0;      		
+    		try {
+    			  //Thread.sleep(31);    // one second
+    			}
+    			catch (Exception e) {}     // this never happen... nobody check for it
+    	}
+    	
     }
 }
     
