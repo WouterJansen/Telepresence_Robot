@@ -78,11 +78,11 @@ public class InputReader{
 				rwheel = Math.round((rmag - lmag) * 100.0) / 100.0; ;
 			//forwards
 			}else{
-				lwheel = Math.round((rmag - lmag) * 100.0) / 100.0;;
-				rwheel = Math.round((rmag - lmag) * 100.0) / 100.0; ;
+				lwheel = Math.round((rmag - lmag) * 100.0) / 100.0;
+				rwheel = Math.round((rmag - lmag) * 100.0) / 100.0;
 			}
 	    // if total outcome is backwards
-		}else{					
+		}else if(rmag - lmag < 0){					
 			//right
 			if(dir > 0 && dir < 180 && mag > 0){
 				lwheel = -Math.round((lmag - rmag) * 100.0) / 100.0;
@@ -93,10 +93,14 @@ public class InputReader{
 				rwheel = -Math.round((lmag - rmag) * 100.0) / 100.0; ;
 		    //backwards
 			}else{
-				lwheel = -Math.round((lmag - rmag) * 100.0) / 100.0;;
-				rwheel = -Math.round((lmag - rmag) * 100.0) / 100.0; ;
+				lwheel = -Math.round((lmag - rmag) * 100.0) / 100.0;
+				rwheel = -Math.round((lmag - rmag) * 100.0) / 100.0;
 			}
-		}	
+		// no acceleration but still using analog
+		}else{
+			lwheel = 0;
+			rwheel = 0;
+		}
 	}
 	
 	
