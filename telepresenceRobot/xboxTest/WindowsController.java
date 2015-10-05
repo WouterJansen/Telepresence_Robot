@@ -158,7 +158,7 @@ public class WindowsController{
 						dir = 270;
 					}else if(keyList.contains("right")){						//if right is also being pressed, then set direction as well.
 					    mag = 1;
-						dir = 180;
+						dir = 90;
 					}else{
 					    mag = 0;
 						dir = 0;
@@ -174,7 +174,7 @@ public class WindowsController{
 						dir = 270;
 					}else if(keyList.contains("right")){						//if right is also being pressed, then set direction as well.
 					    mag = 1;
-						dir = 180;
+						dir = 90;
 					}else{
 					    mag = 0;
 						dir = 0;
@@ -223,7 +223,7 @@ public class WindowsController{
 				switch(e.getKeyCode()){
 				case KeyEvent.VK_UP:											// up arrow key
 					keyList.remove(getIndexByname("up"));						//if key is released, remove it from keylist (uses helper function)
-					if(keyList.isEmpty()){										//if no keys are pressed, reset all values.
+					if(keyList.contains("up") == false && keyList.contains("down") == false){	//if no up/down keys are pressed, reset all values.
 						mag = 0;
 						dir = 0;
 						lmag = 0;
@@ -233,7 +233,7 @@ public class WindowsController{
 					break;			
 				case KeyEvent.VK_DOWN:											// down arrow key
 					keyList.remove(getIndexByname("down"));						//if key is released, remove it from keylist (uses helper function)
-					if(keyList.isEmpty()){										//if no keys are pressed, reset all values.
+					if(keyList.contains("up") == false && keyList.contains("down") == false){	//if no up/down keys are pressed, reset all values.
 						mag = 0;
 						dir = 0;
 						lmag = 0;
@@ -243,7 +243,7 @@ public class WindowsController{
 					break;	
 				case KeyEvent.VK_LEFT:											// left arrow key
 					keyList.remove(getIndexByname("left"));						//if key is released, remove it from keylist (uses helper function)
-					if(keyList.isEmpty()){										//if no keys are pressed, reset all values.
+					if(keyList.contains("up") == false && keyList.contains("down") == false){	//if no up/down keys are pressed, reset all values.
 						mag = 0;
 						dir = 0;
 						lmag = 0;
@@ -253,7 +253,7 @@ public class WindowsController{
 					break;	
 				case KeyEvent.VK_RIGHT:											// right arrow key
 					keyList.remove(getIndexByname("right"));					//if key is released, remove it from keylist (uses helper function)
-					if(keyList.isEmpty()){										//if no keys are pressed, reset all values.
+					if(keyList.contains("up") == false && keyList.contains("down") == false){	//if no up/down keys are pressed, reset all values.
 						mag = 0;
 						dir = 0;
 						lmag = 0;
