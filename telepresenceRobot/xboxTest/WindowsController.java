@@ -156,15 +156,22 @@ public class WindowsController{
 					if(keyList.contains("left")){								//if left is also being pressed, then set direction as well.
 					    mag = 1;
 						dir = 270;
+						lmag = 0;
+						rmag = 1;
+					}else if(keyList.contains("down") == true){					// if both up and down are pressed, nothing happens
+						rmag = 0;
+						lmag = 0;
 					}else if(keyList.contains("right")){						//if right is also being pressed, then set direction as well.
 					    mag = 1;
 						dir = 90;
+						lmag = 0;
+						rmag = 1;
 					}else{
 					    mag = 0;
 						dir = 0;
+						lmag = 0;
+						rmag = 1;
 					}
-				    lmag = 0;
-					rmag = 1;
 					updateSpeeds();
 					break;			
 				case KeyEvent.VK_DOWN:											// down arrow key
@@ -172,15 +179,22 @@ public class WindowsController{
 					if(keyList.contains("left")){								//if left is also being pressed, then set direction as well.
 					    mag = 1;
 						dir = 270;
+						lmag = 1;
+						rmag = 0;
+					}else if(keyList.contains("up") == true){					//if both up and down are pressed, nothing happens.
+						rmag = 0;
+						lmag = 0;
 					}else if(keyList.contains("right")){						//if right is also being pressed, then set direction as well.
 					    mag = 1;
 						dir = 90;
+						lmag = 1;
+						rmag = 0;
 					}else{
 					    mag = 0;
 						dir = 0;
+						lmag = 1;
+						rmag = 0;
 					}
-				    lmag = 1;
-					rmag = 0;
 					updateSpeeds();
 					break;
 				case KeyEvent.VK_LEFT:											// left arrow key
