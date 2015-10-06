@@ -1,6 +1,7 @@
 import ch.aplu.xboxcontroller.*;
 import javax.swing.*;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -17,12 +18,16 @@ public class WindowsController{
 	//Gui Elements
 	static JFrame frame;
 	static Box box = Box.createVerticalBox();
-	static JLabel line1;
-	static JLabel line2;
-	static JLabel line3;
-	static JLabel line4;
-	static JLabel line5;
-	static JLabel line6;
+	static JLabel magLabel;
+	static JLabel dirLabel;
+	static JLabel lmagLabel;
+	static JLabel rmagLabel;
+	static JLabel lwheelLabel;
+	static JLabel rwheelLabel;
+	static JLabel keyListLabel;
+	static JLabel xboxTitle;
+	static JLabel keyboardTitle;
+	static JLabel outputTitle;
 	//Xbox Controller Elements
 	static XboxController xc;
     static double mag = 0;
@@ -36,7 +41,7 @@ public class WindowsController{
 	//RaspberryPi IP-address
 	static String address = "192.168.1.201";
 	//list that keeps all current pressed keyboard buttons
-	ArrayList<String> keyList = new ArrayList<String>();
+	static ArrayList<String> keyList = new ArrayList<String>();
 	
 	//Constructor
     public WindowsController(){
@@ -51,23 +56,33 @@ public class WindowsController{
 	//create the GUI
 	public static void createGUI(){
     	frame = new JFrame("Teleprecence Robot");
-        line1 = new JLabel("Left Analog Magnitude:0.0\n");
-        line2 = new JLabel("Left Analog Direction:0.0\n");
-        line3 = new JLabel("Left Trigger Magnitude:0.0\n");
-        line4 = new JLabel("Right Trigger Magnitude:0.0\n");
-        line5 = new JLabel("Left Wheel Power:0.0\n");
-        line6 = new JLabel("Right Wheel Power:0.0\n");
-        box.add(new JLabel("Xbox Input:"));
-        box.add(line1);
-        box.add(line2);
-        box.add(line3);
-        box.add(line4);
+        magLabel = new JLabel("Left Analog Magnitude:0.0\n");
+        dirLabel = new JLabel("Left Analog Direction:0.0\n");
+        lmagLabel = new JLabel("Left Trigger Magnitude:0.0\n");
+        rmagLabel = new JLabel("Right Trigger Magnitude:0.0\n");
+        keyListLabel = new JLabel("Pressed Keys: None\n");
+        lwheelLabel = new JLabel("Left Wheel Power:0.0\n");
+        rwheelLabel = new JLabel("Right Wheel Power:0.0\n");
+        xboxTitle = new JLabel("Xbox Input\n");
+        keyboardTitle = new JLabel("Keyboard Input\n");
+        outputTitle = new JLabel("Wheel Speed Output\n");
+        xboxTitle.setFont(xboxTitle.getFont().deriveFont(xboxTitle.getFont().getStyle() | Font.ITALIC));
+        keyboardTitle.setFont(keyboardTitle.getFont().deriveFont(keyboardTitle.getFont().getStyle() | Font.ITALIC));
+        outputTitle.setFont(outputTitle.getFont().deriveFont(outputTitle.getFont().getStyle() | Font.ITALIC));
+        box.add(xboxTitle);
+        box.add(magLabel);
+        box.add(dirLabel);
+        box.add(lmagLabel);
+        box.add(rmagLabel);
         box.add(new JLabel(" "));
-        box.add(new JLabel("Wheel Speed Output:"));
-        box.add(line5);
-        box.add(line6);
+        box.add(keyboardTitle);
+        box.add(keyListLabel);
+        box.add(new JLabel(" "));
+        box.add(outputTitle);
+        box.add(lwheelLabel);
+        box.add(rwheelLabel);
         frame.add(box);
-        frame.setSize(new Dimension(400,200));
+        frame.setSize(new Dimension(400,230));
         frame.setLocationRelativeTo(null);
         frame.setIconImage(Toolkit.getDefaultToolkit().getImage("xbox.png"));
         frame.setVisible(true);        
@@ -96,28 +111,28 @@ public class WindowsController{
     		//listens to changes in the left thumbs magnitude reading
     		public void leftThumbMagnitude(double magnitude){
     			mag = Math.round(magnitude * 100.0) / 100.0;
-    			line1.setText("Left Analog magnitude: " + mag + "\n");
+    			magLabel.setText("Left Analog magnitude: " + mag + "\n");
     			updateSpeeds();
     		}
     		
     		//listens to changes in the left thumbs direction reading
     		public void leftThumbDirection(double direction){
     			dir = Math.round(direction * 100.0) / 100.0;
-    			line2.setText("Left Analog Direction: " + dir + "\n");
+    			dirLabel.setText("Left Analog Direction: " + dir + "\n");
     			updateSpeeds();
     		}   
     		
     		//listens to changes in the left triggers magnitude reading
     		public void leftTrigger(double lmagnitude){
     			lmag = Math.round(lmagnitude * 100.0) / 100.0;
-    			line3.setText("Left Trigger Magnitude: " + lmag + "\n");
+    			lmagLabel.setText("Left Trigger Magnitude: " + lmag + "\n");
     			updateSpeeds();
     		}
 
     		//listens to changes in the right triggers magnitude reading
     		public void rightTrigger(double rmagnitude){
     			rmag = Math.round(rmagnitude * 100.0) / 100.0;
-    			line4.setText("Right Trigger Magnitude: " + rmag + "\n");
+    			rmagLabel.setText("Right Trigger Magnitude: " + rmag + "\n");
     			updateSpeeds();
     		}
     		
@@ -366,8 +381,21 @@ public class WindowsController{
 //				l.printStackTrace();
 //			}
 		}
-		line5.setText("Left Wheel Power: " + lwheel + "\n");
-		line6.setText("Right Wheel Power: " + rwheel + "\n");
+		
+		//builds a string off pressed keys in the keyList array
+		StringBuilder builder = new StringBuilder();
+
+		for (String string : keyList) {
+		    if (builder.length() > 0) {
+		        builder.append(" ");
+		    }
+		    builder.append(string);
+		}
+		String keyListString = builder.toString();
+		//set the GUI labels correctly
+		keyListLabel.setText("Pressed Keys: " + keyListString + "\n");
+		lwheelLabel.setText("Left Wheel Power: " + lwheel + "\n");
+		rwheelLabel.setText("Right Wheel Power: " + rwheel + "\n");
 	}
 	
 	//sends the wheel speeds to the Raspberry Pi 
