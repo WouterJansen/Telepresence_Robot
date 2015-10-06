@@ -249,6 +249,10 @@ public class WindowsController{
 						lmag = 0;
 						rmag = 0;
 						updateSpeeds();
+					}else if(keyList.contains("up") == true){					//if up key is still pressed and left released, go forward.
+						rmag = 1;
+					}else{														//if down key is still pressed and left released, go backward.
+						lmag = 1;
 					}
 					break;	
 				case KeyEvent.VK_RIGHT:											// right arrow key
@@ -259,6 +263,12 @@ public class WindowsController{
 						lmag = 0;
 						rmag = 0;
 						updateSpeeds();
+					}else if(keyList.contains("up") == true){					//if up key is still pressed and left released, go forward.
+						rmag = 1;
+						lmag = 0;
+					}else{														//if down key is still pressed and left released, go backward.
+						rmag = 0;
+						lmag = 1;
 					}
 					break;	
 				}				
