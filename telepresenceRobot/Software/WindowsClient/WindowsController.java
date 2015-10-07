@@ -1,3 +1,4 @@
+package WindowsClient;
 import ch.aplu.xboxcontroller.*;
 import javax.swing.*;
 import java.awt.Dimension;
