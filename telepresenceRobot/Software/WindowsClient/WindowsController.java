@@ -259,6 +259,12 @@ public class WindowsController{
 						lmag = 0;
 						rmag = 0;
 						updateSpeeds();
+					}else if(keyList.contains("down") == true){					//if down key is pressed when up is released, go backwards.
+						mag = 0;
+						dir = 0;
+						rmag = 0;
+						lmag = 1;
+						updateSpeeds();
 					}
 					break;			
 				case KeyEvent.VK_DOWN:											// down arrow key
@@ -268,6 +274,12 @@ public class WindowsController{
 						dir = 0;
 						lmag = 0;
 						rmag = 0;
+						updateSpeeds();
+					}else if(keyList.contains("up") == true){					//if up key is pressed when down is released, go forwards.
+						mag = 0;
+						dir = 0;
+						rmag = 1;
+						lmag = 0;
 						updateSpeeds();
 					}
 					break;	
