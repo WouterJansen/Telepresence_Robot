@@ -333,10 +333,10 @@ public class WindowsController{
 			//right
 			if(dir > 0 && dir < 180 && mag > 0){
 				lwheel = Math.round((rmag - lmag) * 100.0) / 100.0;
-				rwheel = Math.round((1 -((rmag - lmag)*mag)) * 100.0) / 100.0;
+				rwheel = Math.round(((rmag - lmag) - (rmag - lmag)*mag) * 100.0) / 100.0;
 			//left
 			}else if (dir > 180 && dir < 359 && mag > 0){
-				lwheel = Math.round((1 -((rmag - lmag)*mag)) * 100.0) / 100.0;
+				lwheel = Math.round(((rmag - lmag) - (rmag - lmag)*mag) * 100.0) / 100.0;
 				rwheel = Math.round((rmag - lmag) * 100.0) / 100.0; ;
 			//forwards
 			}else{
@@ -354,10 +354,10 @@ public class WindowsController{
 			//right
 			if(dir > 0 && dir < 180 && mag > 0){
 				lwheel = -Math.round((lmag - rmag) * 100.0) / 100.0;
-				rwheel = -Math.round((1 -((lmag - rmag)*mag)) * 100.0) / 100.0;
+				rwheel = -Math.round(((lmag - rmag) - (lmag - rmag)*mag) * 100.0) / 100.0;
 			//left
 			}else if (dir > 180 && dir < 359 && mag > 0){
-				lwheel = -Math.round((1 -((lmag - rmag)*mag)) * 100.0) / 100.0;
+				lwheel = -Math.round(((lmag - rmag) - (lmag - rmag)*mag) * 100.0) / 100.0;
 				rwheel = -Math.round((lmag - rmag) * 100.0) / 100.0; ;
 		    //backwards
 			}else{
