@@ -9,6 +9,7 @@ public class PiRobot {
 	static double lwheel = 0;
 	static double rwheel = 0;
 	
+	@SuppressWarnings("resource")
 	public void TCPListener() throws IOException{
 		
 		String clientSentence;
