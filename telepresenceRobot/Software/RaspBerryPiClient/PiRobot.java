@@ -13,15 +13,23 @@ public class PiRobot {
 	public void TCPListener() throws IOException{
 		
 		String clientSentence;
+		//Serversocket openen
         ServerSocket welcomeSocket = new ServerSocket(6789);
+        //Welcome message
         System.out.println("Pi says Hi!\n");
+        //While(true) to keep receiving data from PC
         while(true)
         {
+        	//Open connectionSocket to receive data
            Socket connectionSocket = welcomeSocket.accept();
+           //Put received data in buffer
            BufferedReader inFromClient =
               new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+           //Read data out of buffer
            clientSentence = inFromClient.readLine();
+           //print the received data
            System.out.println("Received: " + clientSentence);
+           //Split this data back to 2 separate wheelvariables 
            String[] splitArray = clientSentence.split(",",2);
            lwheelOld = lwheel;
            rwheelOld = rwheel;

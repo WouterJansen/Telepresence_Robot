@@ -414,15 +414,21 @@ public class WindowsController{
 	//sends the wheel speeds to the Raspberry Pi 
 	public static void TCPSend() throws UnknownHostException, IOException{
 		
-		String speeds;				
-		Socket clientSocket = new Socket();
-		
+		String speeds;		
+		//Socket gets initialized
+		Socket clientSocket = new Socket();		
+		//Connecting to 192.168.1.201(rpi)
 		clientSocket.connect(new InetSocketAddress(address, 6789));
+		//DataOutputStream to send data to rpi
 		DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());		
+		//Both wheelspeeds combined in 1 String sperated by a ","
 		speeds = lwheel + "," + rwheel;
+		//Speeds sended over TCP
 		outToServer.writeBytes(speeds + '\n');
+		//For debugging purposes we want to see how many times we sent data
 		System.out.println("Send:" + connections);
 		connections = connections + 1;
+		//Closing TCP Socket
 		clientSocket.close();		
 	}
     
