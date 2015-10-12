@@ -2,6 +2,7 @@ package RaspBerryPiClient;
 import java.io.*;
 import java.net.*;
 
+
 public class PiRobot {
 	
 	static double lwheelOld = 0;
@@ -39,6 +40,10 @@ public class PiRobot {
 	        rwheel = Double.parseDouble(splitArray[1]);
 			
 		}
+	}
+	
+	public void OutToPins(){
+		//final GpioCOntroller gpio = GpioFactory.getInstance();
 	}
 	
 	public void TCPReceive() throws IOException{
