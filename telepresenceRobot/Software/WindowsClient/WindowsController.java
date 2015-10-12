@@ -142,7 +142,7 @@ public class WindowsController{
     	        if (!connected)
     	        	JOptionPane.showMessageDialog(null,"Xbox controller not connected.","Connection Lost",JOptionPane.ERROR_MESSAGE);
     	        else{
-    	        	xc.vibrate(32767, 32767, 300);
+    	        	xc.vibrate(50000, 50000, 300);
     	        }
     		}
     	});
