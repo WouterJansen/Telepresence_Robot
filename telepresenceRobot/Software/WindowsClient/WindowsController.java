@@ -37,6 +37,8 @@ public class WindowsController{
 	static double rmag = 0;
     static double lwheel = 0;
 	static double rwheel = 0;
+	static double oldLwheel = 0;
+	static double oldRwheel = 0;
 	static int direction = 0;
 	static int connections = 0;
 	//RaspberryPi IP-address
@@ -356,12 +358,16 @@ public class WindowsController{
 				lwheel = Math.round((rmag - lmag) * 100.0) / 100.0;
 				rwheel = Math.round((rmag - lmag) * 100.0) / 100.0;
 			}
-			try {
+			if(oldLwheel != lwheel || oldRwheel != rwheel){
+				try {
 				TCPSend();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				} catch (IOException l) {
+					// TODO Auto-generated catch block
+					l.printStackTrace();
+				}
 			}
+			oldLwheel = lwheel;
+			oldRwheel = rwheel;
 	    // if total outcome is backwards
 		}else if(rmag - lmag < 0){					
 			//right
@@ -377,22 +383,30 @@ public class WindowsController{
 				lwheel = -Math.round((lmag - rmag) * 100.0) / 100.0;
 				rwheel = -Math.round((lmag - rmag) * 100.0) / 100.0;
 			}
-			try {
-			TCPSend();
-			} catch (IOException l) {
-				// TODO Auto-generated catch block
-				l.printStackTrace();
+			if(oldLwheel != lwheel || oldRwheel != rwheel){
+				try {
+				TCPSend();
+				} catch (IOException l) {
+					// TODO Auto-generated catch block
+					l.printStackTrace();
+				}
 			}
+			oldLwheel = lwheel;
+			oldRwheel = rwheel;
 		// no acceleration but still using analog
 		}else{
 			lwheel = 0;
 			rwheel = 0;
-			try {
-			TCPSend();
-			} catch (IOException l) {
-				// TODO Auto-generated catch block
-				l.printStackTrace();
+			if(oldLwheel != lwheel || oldRwheel != rwheel){
+				try {
+				TCPSend();
+				} catch (IOException l) {
+					// TODO Auto-generated catch block
+					l.printStackTrace();
+				}
 			}
+			oldLwheel = lwheel;
+			oldRwheel = rwheel;
 		}
 		
 		//builds a string off pressed keys in the keyList array
