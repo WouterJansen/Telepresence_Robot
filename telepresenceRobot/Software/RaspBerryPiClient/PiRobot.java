@@ -8,18 +8,41 @@ public class PiRobot {
 	static double rwheelOld = 0;
 	static double lwheel = 0;
 	static double rwheel = 0;
+	private DatagramSocket serverSocket;
 	
 	public PiRobot() throws IOException{
 		//TCPReceive();
 		UDPReceive();
 	}
 	
-	public void UDPReceive(){
+	public void UDPReceive() throws IOException{
+		System.out.println("udpi says hi!");
+		serverSocket = new DatagramSocket(9876);
+		//Create array to story received data
+		byte[] receiveData = new byte[1024];
 		
+		while(true)
+		{
+			//Create datagrampacket to receive data
+			DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+			//receive datapacket
+			serverSocket.receive(receivePacket);
+			//Store data in string
+			String clientSentence = new String(receivePacket.getData());
+			//print the received data
+	        System.out.println("Received: " + clientSentence);
+	        //Split this data back to 2 separate wheelvariables 
+	        String[] splitArray = clientSentence.split(",",2);
+	        lwheelOld = lwheel;
+	        rwheelOld = rwheel;
+	        lwheel = Double.parseDouble(splitArray[0]);
+	        rwheel = Double.parseDouble(splitArray[1]);
+			
+		}
 	}
 	
 	public void TCPReceive() throws IOException{
-		System.out.println("pi says hi!");
+		System.out.println("tcpi says hi!");
 		String clientSentence;
 		//open Serversocket 
         @SuppressWarnings("resource")
