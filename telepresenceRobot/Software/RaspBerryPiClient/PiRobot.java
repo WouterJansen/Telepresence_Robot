@@ -28,7 +28,7 @@ public class PiRobot {
 			//receive datapacket
 			serverSocket.receive(receivePacket);
 			//Store data in string
-			String clientSentence = new String(receivePacket.getData());
+			String clientSentence = new String(receivePacket.getData(),0,receivePacket.getLength());
 			//print the received data
 	        System.out.println("Received: " + clientSentence);
 	        //Split this data back to 2 separate wheelvariables 
