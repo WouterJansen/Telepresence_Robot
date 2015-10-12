@@ -356,12 +356,12 @@ public class WindowsController{
 				lwheel = Math.round((rmag - lmag) * 100.0) / 100.0;
 				rwheel = Math.round((rmag - lmag) * 100.0) / 100.0;
 			}
-//			try {
-//				TCPSend();
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
+			try {
+				TCPSend();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	    // if total outcome is backwards
 		}else if(rmag - lmag < 0){					
 			//right
@@ -377,22 +377,22 @@ public class WindowsController{
 				lwheel = -Math.round((lmag - rmag) * 100.0) / 100.0;
 				rwheel = -Math.round((lmag - rmag) * 100.0) / 100.0;
 			}
-//			try {
-//			TCPSend();
-//			} catch (IOException l) {
-//				// TODO Auto-generated catch block
-//				l.printStackTrace();
-//			}
+			try {
+			TCPSend();
+			} catch (IOException l) {
+				// TODO Auto-generated catch block
+				l.printStackTrace();
+			}
 		// no acceleration but still using analog
 		}else{
 			lwheel = 0;
 			rwheel = 0;
-//			try {
-//			TCPSend();
-//			} catch (IOException l) {
-//				// TODO Auto-generated catch block
-//				l.printStackTrace();
-//			}
+			try {
+			TCPSend();
+			} catch (IOException l) {
+				// TODO Auto-generated catch block
+				l.printStackTrace();
+			}
 		}
 		
 		//builds a string off pressed keys in the keyList array
