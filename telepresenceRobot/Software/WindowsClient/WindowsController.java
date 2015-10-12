@@ -431,7 +431,7 @@ public class WindowsController{
 		rwheelLabel.setText("Right Wheel Power: " + rwheel + "\n");
 	}
 	
-	//sends the wheel speeds to the Raspberry Pi 
+	//sends the wheel speeds to the Raspberry Pi over TCP
 	public static void TCPSend() throws UnknownHostException, IOException{
 		
 		//Both wheel-speeds combined in 1 String separated by a ","
@@ -450,7 +450,8 @@ public class WindowsController{
 		//Closing TCP Socket
 		clientSocket.close();		
 	}
-    
+	
+	//sends the wheel speeds to the Raspberry Pi over UDP
 	public static void UDPSend() throws IOException{
 		//Both wheel-speeds combined in 1 String separated by a ","
 		String speeds = lwheel + "," + rwheel;
