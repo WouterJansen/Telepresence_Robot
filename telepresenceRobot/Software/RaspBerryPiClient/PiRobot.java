@@ -1,6 +1,14 @@
 package RaspBerryPiClient;
 import java.io.*;
 import java.net.*;
+import com.pi4j.io.gpio.GpioController;
+import com.pi4j.io.gpio.GpioFactory;
+import com.pi4j.io.gpio.GpioPinDigitalOutput;
+import com.pi4j.io.gpio.PinState;
+import com.pi4j.io.gpio.RaspiPin;
+
+
+import com.pi4j.io.gpio.GpioController;
 
 
 public class PiRobot {
@@ -43,7 +51,13 @@ public class PiRobot {
 	}
 	
 	public void OutToPins(){
-		//final GpioCOntroller gpio = GpioFactory.getInstance();
+		//create gpio controller
+		final GpioController gpio = GpioFactory.getInstance();
+		//Pin 8 voor UART-RTS op 0 zetten in receive mode te zetten
+		final GpioPinDigitalOutput pinrts = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_11,"UART0-RTS",PinState.LOW);
+		//DataPin initialiseren op 1 (uart0-
+		final GpioPinDigitalOutput pindata = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_08,"UART0-TX",PinState.HIGH);
+		
 	}
 	
 	public void TCPReceive() throws IOException{
