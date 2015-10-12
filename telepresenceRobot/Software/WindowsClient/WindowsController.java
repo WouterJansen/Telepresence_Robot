@@ -360,7 +360,7 @@ public class WindowsController{
 			}
 			if(oldLwheel != lwheel || oldRwheel != rwheel){
 				try {
-				TCPSend();
+				UDPSend();
 				} catch (IOException l) {
 					// TODO Auto-generated catch block
 					l.printStackTrace();
@@ -385,7 +385,7 @@ public class WindowsController{
 			}
 			if(oldLwheel != lwheel || oldRwheel != rwheel){
 				try {
-				TCPSend();
+				UDPSend();
 				} catch (IOException l) {
 					// TODO Auto-generated catch block
 					l.printStackTrace();
@@ -399,7 +399,7 @@ public class WindowsController{
 			rwheel = 0;
 			if(oldLwheel != lwheel || oldRwheel != rwheel){
 				try {
-				TCPSend();
+				UDPSend();
 				} catch (IOException l) {
 					// TODO Auto-generated catch block
 					l.printStackTrace();
@@ -426,7 +426,7 @@ public class WindowsController{
 	}
 	
 	//sends the wheel speeds to the Raspberry Pi 
-	public static void TCPSend() throws UnknownHostException, IOException{
+	public static void UDPSend() throws UnknownHostException, IOException{
 		
 		String speeds;		
 		//Socket gets initialized
@@ -435,9 +435,9 @@ public class WindowsController{
 		clientSocket.connect(new InetSocketAddress(address, 6789));
 		//DataOutputStream to send data to rpi
 		DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());		
-		//Both wheelspeeds combined in 1 String sperated by a ","
+		//Both wheelspeeds combined in 1 String seperated by a ","
 		speeds = lwheel + "," + rwheel;
-		//Speeds sended over TCP
+		//Speeds is sent over TCP
 		outToServer.writeBytes(speeds + '\n');
 		//For debugging purposes we want to see how many times we sent data
 		System.out.println("Send:" + connections);

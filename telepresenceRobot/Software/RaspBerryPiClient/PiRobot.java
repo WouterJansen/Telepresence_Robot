@@ -10,10 +10,20 @@ public class PiRobot {
 	static double rwheel = 0;
 	
 	public PiRobot() throws IOException{
+		//TCPReceive();
+		UDPReceive();
+	}
+	
+	public void UDPReceive(){
+		
+	}
+	
+	public void TCPReceive() throws IOException{
 		System.out.println("pi says hi!");
 		String clientSentence;
-		//Serversocket openen
-        ServerSocket welcomeSocket = new ServerSocket(6789);
+		//open Serversocket 
+        @SuppressWarnings("resource")
+		ServerSocket welcomeSocket = new ServerSocket(6789);
         //Welcome message
         
         //While(true) to keep receiving data from PC
@@ -39,12 +49,12 @@ public class PiRobot {
         }
 	}
 	
+	
 	public double RPMLimiter(double wheel, double wheelOld){
 		double speed = 0;
 		double maximumAcc = 0.25;
 		double maximumDec = 0.10;
-		
-		double acc = 0;
+	
 		
 		if(wheel > 0 && wheelOld > 0){				//positieve waarden
 			if(wheel - wheelOld > 0){
