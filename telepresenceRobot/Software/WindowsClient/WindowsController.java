@@ -40,7 +40,7 @@ public class WindowsController{
 	static int direction = 0;
 	static int connections = 0;
 	//RaspberryPi IP-address
-	static String address = "192.168.1.201";
+	static String address = "localhost";
 	//list that keeps all current pressed keyboard buttons
 	static ArrayList<String> keyList = new ArrayList<String>();
 	

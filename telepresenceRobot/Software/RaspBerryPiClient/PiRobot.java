@@ -9,21 +9,20 @@ public class PiRobot {
 	static double lwheel = 0;
 	static double rwheel = 0;
 	
-	@SuppressWarnings("resource")
-	public void TCPListener() throws IOException{
-		
+	public PiRobot() throws IOException{
+		System.out.println("pi says hi!");
 		String clientSentence;
 		//Serversocket openen
         ServerSocket welcomeSocket = new ServerSocket(6789);
         //Welcome message
-        System.out.println("Pi says Hi!\n");
-        //While(true) to keep receiving data from PC
         
+        //While(true) to keep receiving data from PC
+        while(true)
+        {  
        //Open connectionSocket to receive data
        Socket connectionSocket = welcomeSocket.accept();
            
-        while(true)
-        {  
+
            //Put received data in buffer
            BufferedReader inFromClient =
               new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
@@ -81,6 +80,6 @@ public class PiRobot {
 	
    public static void main(String argv[]) throws Exception
       {
-         
+         new PiRobot();
       }
 }
