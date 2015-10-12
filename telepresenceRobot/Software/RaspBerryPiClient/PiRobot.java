@@ -18,14 +18,16 @@ public class PiRobot {
         //Welcome message
         System.out.println("Pi says Hi!\n");
         //While(true) to keep receiving data from PC
+        
+       //Open connectionSocket to receive data
+       Socket connectionSocket = welcomeSocket.accept();
+           
         while(true)
-        {
-        	//Open connectionSocket to receive data
-           Socket connectionSocket = welcomeSocket.accept();
+        {  
            //Put received data in buffer
            BufferedReader inFromClient =
               new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
-           //Read data out of buffer
+           //Read data out of buffer           
            clientSentence = inFromClient.readLine();
            //print the received data
            System.out.println("Received: " + clientSentence);
