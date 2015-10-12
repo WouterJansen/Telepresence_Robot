@@ -9,6 +9,9 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -360,7 +363,8 @@ public class WindowsController{
 			}
 			if(oldLwheel != lwheel || oldRwheel != rwheel){
 				try {
-				UDPSend();
+					UDPSend();
+					//TCPSend();
 				} catch (IOException l) {
 					// TODO Auto-generated catch block
 					l.printStackTrace();
@@ -385,7 +389,8 @@ public class WindowsController{
 			}
 			if(oldLwheel != lwheel || oldRwheel != rwheel){
 				try {
-				UDPSend();
+					UDPSend();
+					//TCPSend();
 				} catch (IOException l) {
 					// TODO Auto-generated catch block
 					l.printStackTrace();
@@ -399,7 +404,8 @@ public class WindowsController{
 			rwheel = 0;
 			if(oldLwheel != lwheel || oldRwheel != rwheel){
 				try {
-				UDPSend();
+					UDPSend();
+					//TCPSend();
 				} catch (IOException l) {
 					// TODO Auto-generated catch block
 					l.printStackTrace();
@@ -426,17 +432,16 @@ public class WindowsController{
 	}
 	
 	//sends the wheel speeds to the Raspberry Pi 
-	public static void UDPSend() throws UnknownHostException, IOException{
+	public static void TCPSend() throws UnknownHostException, IOException{
 		
-		String speeds;		
+		//Both wheel-speeds combined in 1 String separated by a ","
+		String speeds = lwheel + "," + rwheel;	
 		//Socket gets initialized
 		Socket clientSocket = new Socket();		
 		//Connecting to 192.168.1.201(rpi)
 		clientSocket.connect(new InetSocketAddress(address, 6789));
 		//DataOutputStream to send data to rpi
 		DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());		
-		//Both wheelspeeds combined in 1 String seperated by a ","
-		speeds = lwheel + "," + rwheel;
 		//Speeds is sent over TCP
 		outToServer.writeBytes(speeds + '\n');
 		//For debugging purposes we want to see how many times we sent data
@@ -446,6 +451,24 @@ public class WindowsController{
 		clientSocket.close();		
 	}
     
+	public static void UDPSend() throws IOException{
+		//Both wheel-speeds combined in 1 String separated by a ","
+		String speeds = lwheel + "," + rwheel;
+		//Socket gets initialized
+		DatagramSocket clientSocket = new DatagramSocket();
+		//Getting Internet-address from IP-Address
+        InetAddress IPAddress = InetAddress.getByName(address);
+        byte[] sendData = new byte[1024];
+        sendData = speeds.getBytes();
+        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 9876);
+        clientSocket.send(sendPacket);
+        //For debugging purposes we want to see how many times we sent data
+      	System.out.println("Send:" + connections);
+      	connections = connections + 1;
+        //closing UDP Socket
+        clientSocket.close();
+	}
+	
     public static void main(String[] args){
     	new WindowsController();    	
     }
