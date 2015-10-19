@@ -440,7 +440,7 @@ public class WindowsController{
         DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 9876);
         clientSocket.send(sendPacket);
         //For debugging purposes we want to see how many times we sent data
-      	System.out.println("Send:" + connections);
+      	System.out.println("Send " + connections +": " + speeds);
       	connections = connections + 1;
         //closing UDP Socket
         clientSocket.close();
