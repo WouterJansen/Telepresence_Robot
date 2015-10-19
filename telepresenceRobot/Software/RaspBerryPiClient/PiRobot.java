@@ -58,29 +58,28 @@ public class PiRobot {
         }
        
         public void SerialOut(){
-                 System.out.println("Starting serial communication.");
-                // create an instance of the serial communications class
+            
+        	System.out.println("Starting serial communication.");
+            // create an instance of the serial communications class
             final Serial serial = SerialFactory.createInstance();
             long count = 0;
             try {
-            // open the default serial port provided on the GPIO header
-            serial.open(Serial.DEFAULT_COM_PORT, 38400);
+            	// open the default serial port provided on the GPIO header
+            	serial.open(Serial.DEFAULT_COM_PORT, 1);
            
-            // continuous loop to keep the program running until the user terminates the program
-            while(true) {
-                try {
+            	// continuous loop to keep the program running until the user terminates the program
+            	while(true) {
+            		try {
                         count = count++;
                         System.out.println("Serial transmit #" + count + ".");
-                    // write a individual bytes to the serial transmit buffer
-                    serial.write((byte) 13);
-                    serial.write((byte) 10);
-                   
-   
+                        // write a individual bytes to the serial transmit buffer
+                        //serial.write(WheelSpeedConverter.Conversion(wheelSpeeds));
+                
                 }
                 catch(IllegalStateException ex){
                     ex.printStackTrace();                    
                 }                
-          }
+            	}
            
         }
         catch(SerialPortException ex) {
