@@ -7,14 +7,10 @@ import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 public class WindowsController{
@@ -429,26 +425,6 @@ public class WindowsController{
 		keyListLabel.setText("Pressed Keys: " + keyListString + "\n");
 		lwheelLabel.setText("Left Wheel Power: " + lwheel + "\n");
 		rwheelLabel.setText("Right Wheel Power: " + rwheel + "\n");
-	}
-	
-	//sends the wheel speeds to the Raspberry Pi over TCP
-	public static void TCPSend() throws UnknownHostException, IOException{
-		
-		//Both wheel-speeds combined in 1 String separated by a ","
-		String speeds = lwheel + "," + rwheel;	
-		//Socket gets initialized
-		Socket clientSocket = new Socket();		
-		//Connecting to 192.168.1.201(rpi)
-		clientSocket.connect(new InetSocketAddress(address, 6789));
-		//DataOutputStream to send data to rpi
-		DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());		
-		//Speeds is sent over TCP
-		outToServer.writeBytes(speeds + '\n');
-		//For debugging purposes we want to see how many times we sent data
-		System.out.println("Send:" + connections);
-		connections = connections + 1;
-		//Closing TCP Socket
-		clientSocket.close();		
 	}
 	
 	//sends the wheel speeds to the Raspberry Pi over UDP

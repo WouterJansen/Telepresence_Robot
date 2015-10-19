@@ -3,7 +3,6 @@ import java.io.*;
 import java.net.*;
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
-import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import com.pi4j.io.gpio.PinState;
 import com.pi4j.io.gpio.RaspiPin;
 import com.pi4j.io.serial.Serial;
@@ -18,9 +17,21 @@ public class PiRobot {
         static double lwheel = 0;
         static double rwheel = 0;
         private DatagramSocket serverSocket;
-       
+        static long count = 0;
+        final Serial serial = SerialFactory.createInstance();
+        
         public PiRobot() throws IOException{
-                //TCPReceive();
+                System.out.println("Starting serial communication.");
+                // create an instance of the serial communications class
+
+                try {
+                	// open the default serial port provided on the GPIO header
+                	serial.open(Serial.DEFAULT_COM_PORT, 1);
+               
+                }catch(SerialPortException ex) {
+                	System.out.println("Serial communication failed:" + ex.getMessage());
+                	return;
+                }
                 UDPReceive();
         }
        
@@ -39,84 +50,24 @@ public class PiRobot {
                         //Store data in string
                         String clientSentence = new String(receivePacket.getData(),0,receivePacket.getLength());
                         //print the received data
-                System.out.println("Received: " + clientSentence);
-                //Split this data back to 2 separate wheelvariables
-                String[] splitArray = clientSentence.split(",",2);
-                lwheelOld = lwheel;
-                rwheelOld = rwheel;
-                lwheel = Double.parseDouble(splitArray[0]);
-                rwheel = Double.parseDouble(splitArray[1]);
-                       
-                }
+                        System.out.println("Received: " + clientSentence);
+                        try {
+                        	count = count++;
+                        	System.out.println("Serial transmit #" + count + ".");
+                        	// write a individual bytes to the serial transmit buffer
+                        	serial.write(WheelSpeedConverter.Conversion(clientSentence));
+            
+                        }catch(IllegalStateException ex){
+                        	ex.printStackTrace();                    
+                        }                
+                }       
         }
        
         public void OutToPins(){
                 //create gpio controller
                 final GpioController gpio = GpioFactory.getInstance();
                 //Pin 8 voor UART-RTS op 0 zetten om in receive mode te zetten
-                final GpioPinDigitalOutput pinrts = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_11,"UART0-RTS",PinState.LOW);         
-        }
-       
-        public void SerialOut(){
-            
-        	System.out.println("Starting serial communication.");
-            // create an instance of the serial communications class
-            final Serial serial = SerialFactory.createInstance();
-            long count = 0;
-            try {
-            	// open the default serial port provided on the GPIO header
-            	serial.open(Serial.DEFAULT_COM_PORT, 1);
-           
-            	// continuous loop to keep the program running until the user terminates the program
-            	while(true) {
-            		try {
-                        count = count++;
-                        System.out.println("Serial transmit #" + count + ".");
-                        // write a individual bytes to the serial transmit buffer
-                        //serial.write(WheelSpeedConverter.Conversion(wheelSpeeds));
-                
-                }
-                catch(IllegalStateException ex){
-                    ex.printStackTrace();                    
-                }                
-            	}
-           
-        }
-        catch(SerialPortException ex) {
-            System.out.println("Serial communication failed:" + ex.getMessage());
-            return;
-        }
-    }
-       
-        public void TCPReceive() throws IOException{
-                System.out.println("tcpi says hi!");
-                String clientSentence;
-                //open Serversocket
-        @SuppressWarnings("resource")
-                ServerSocket welcomeSocket = new ServerSocket(6789);
-        //Welcome message
-       
-        //While(true) to keep receiving data from PC
-        while(true)
-        {  
-       //Open connectionSocket to receive data
-       Socket connectionSocket = welcomeSocket.accept();
-           
- 
-           //Put received data in buffer
-           BufferedReader inFromClient =
-              new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
-           //Read data out of buffer          
-           clientSentence = inFromClient.readLine();
-           //print the received data
-           System.out.println("Received: " + clientSentence);
-           //Split this data back to 2 separate wheelvariables
-           String[] splitArray = clientSentence.split(",",2);
-           lwheelOld = lwheel;
-           rwheelOld = rwheel;
-           lwheel = Double.parseDouble(splitArray[0]);
-           rwheel = Double.parseDouble(splitArray[1]);
-        }
+                gpio.provisionDigitalOutputPin(RaspiPin.GPIO_11,"UART0-RTS",PinState.LOW);         
         }
        
        
