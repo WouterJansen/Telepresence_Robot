@@ -56,7 +56,7 @@ public class PiRobot {
                         	count = count + 1;
                         	System.out.println("Serial transmit #" + count + ".");
                         	// write a individual bytes to the serial transmit buffer
-                        	serial.write(WheelSpeedConverter.Conversion(clientSentence));
+                        	serial.write((byte) 01010101);
             
                         }catch(IllegalStateException ex){
                         	ex.printStackTrace();                    
