@@ -25,7 +25,7 @@ public class PiRobot {
                 // create an instance of the serial communications class
 
                 try {
-                	// open the default serial port provided on the GPIO header
+                	// open the default serial port provided on the GPIO header, default rpi baud rate.
                 	serial.open(Serial.DEFAULT_COM_PORT, 115200);
                 	System.out.println("Serial communication success!");
                
@@ -69,7 +69,7 @@ public class PiRobot {
         public void OutToPins(){
                 //create gpio controller
                 final GpioController gpio = GpioFactory.getInstance();
-                //Pin 8 voor UART-RTS op 0 zetten om in receive mode te zetten
+                //Pin 8 to set UART-RTS 0 => receive mode
                 gpio.provisionDigitalOutputPin(RaspiPin.GPIO_11,"UART0-RTS",PinState.LOW);         
         }
        
