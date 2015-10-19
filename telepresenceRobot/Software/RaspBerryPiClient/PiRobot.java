@@ -17,7 +17,7 @@ public class PiRobot {
         static double lwheel = 0;
         static double rwheel = 0;
         private DatagramSocket serverSocket;
-        static long count = 0;
+        static int count = 0;
         final Serial serial = SerialFactory.createInstance();
         
         public PiRobot() throws IOException{
@@ -53,7 +53,7 @@ public class PiRobot {
                         //print the received data
                         System.out.println("Received: " + clientSentence);
                         try {
-                        	count = count++;
+                        	count = count + 1;
                         	System.out.println("Serial transmit #" + count + ".");
                         	// write a individual bytes to the serial transmit buffer
                         	serial.write(WheelSpeedConverter.Conversion(clientSentence));
