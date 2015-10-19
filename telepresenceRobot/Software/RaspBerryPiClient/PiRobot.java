@@ -26,7 +26,7 @@ public class PiRobot {
 
                 try {
                 	// open the default serial port provided on the GPIO header
-                	serial.open(Serial.DEFAULT_COM_PORT, 230400);
+                	serial.open(Serial.DEFAULT_COM_PORT, 115200);
                 	System.out.println("Serial communication success!");
                
                 }catch(SerialPortException ex) {
@@ -56,7 +56,8 @@ public class PiRobot {
                         	count = count + 1;
                         	System.out.println("Serial transmit #" + count + ".");
                         	// write a individual bytes to the serial transmit buffer
-                        	serial.write((byte) 01010101);
+                        	System.out.println(clientSentence.getBytes());
+                        	serial.write(WheelSpeedConverter.Conversion(clientSentence));
             
                         }catch(IllegalStateException ex){
                         	ex.printStackTrace();                    
