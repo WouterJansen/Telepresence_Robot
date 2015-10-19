@@ -27,6 +27,7 @@ public class PiRobot {
                 try {
                 	// open the default serial port provided on the GPIO header
                 	serial.open(Serial.DEFAULT_COM_PORT, 1);
+                	System.out.println("Serial communication success!");
                
                 }catch(SerialPortException ex) {
                 	System.out.println("Serial communication failed:" + ex.getMessage());
