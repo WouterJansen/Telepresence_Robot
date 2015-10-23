@@ -33,6 +33,7 @@ public class PiRobot {
                 	System.out.println("Serial communication failed:" + ex.getMessage());
                 	return;
                 }
+                OutToPins();
                 UDPReceive();
         }
        
@@ -41,7 +42,6 @@ public class PiRobot {
                 serverSocket = new DatagramSocket(9876);
                 //Create array to story received data
                 byte[] receiveData = new byte[1024];
-               
                 while(true)
                 {
                         //Create datagrampacket to receive data
@@ -52,18 +52,18 @@ public class PiRobot {
                         String clientSentence = new String(receivePacket.getData(),0,receivePacket.getLength());
                         //print the received data
                         System.out.println("Received: " + clientSentence);
-                        try {
-                        	count = count + 1;
-                        	System.out.println("Serial transmit #" + count + ".");
-                        	// write a individual bytes to the serial transmit buffer
-                        	final byte[] speedBytes = clientSentence.getBytes();
-                        	System.out.println(speedBytes.length);
-                        	serial.write(WheelSpeedConverter.Conversion(clientSentence));
-            
-                        }catch(IllegalStateException ex){
-                        	ex.printStackTrace();                    
-                        }                
+                        //send data over Uart.
+                        UartSend(clientSentence);
                 }       
+        }
+        
+        public void UartSend(String clientSentence){
+        	try {
+            	//send the data but first needs to be converted to right format.
+            	serial.write(WheelSpeedConverter.Conversion(clientSentence));
+            }catch(IllegalStateException ex){
+            	ex.printStackTrace();                    
+            } 
         }
        
         public void OutToPins(){

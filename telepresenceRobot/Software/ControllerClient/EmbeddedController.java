@@ -1,4 +1,4 @@
-package WindowsClient;
+package ControllerClient;
 import ch.aplu.xboxcontroller.*;
 import javax.swing.*;
 import java.awt.Dimension;
@@ -13,7 +13,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.ArrayList;
 
-public class WindowsController{
+public class EmbeddedController{
 	
 	//Gui Elements
 	static JFrame frame;
@@ -46,7 +46,7 @@ public class WindowsController{
 	static ArrayList<String> keyList = new ArrayList<String>();
 	
 	//Constructor
-    public WindowsController(){
+    public EmbeddedController(){
     	createGUI();
     	xc = new XboxController();	   
     	// Left thumb deadzone to ignore small input by moving controller.
@@ -447,7 +447,7 @@ public class WindowsController{
 	}
 	
     public static void main(String[] args){
-    	new WindowsController();    	
+    	new EmbeddedController();    	
     }
 }
     
