@@ -1,6 +1,11 @@
 package ControllerClient;
 import ch.aplu.xboxcontroller.*;
 import javax.swing.*;
+import com.oculusvr.capi.Hmd;
+import com.oculusvr.capi.HmdDesc;
+import com.oculusvr.capi.OvrQuaternionf;
+import com.oculusvr.capi.OvrVector3f;
+import com.oculusvr.capi.TrackingState;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
@@ -18,42 +23,39 @@ public class EmbeddedController{
 	//Gui Elements
 	static JFrame frame;
 	static Box box = Box.createVerticalBox();
-	static JLabel magLabel;
-	static JLabel dirLabel;
-	static JLabel lmagLabel;
-	static JLabel rmagLabel;
-	static JLabel lwheelLabel;
-	static JLabel rwheelLabel;
-	static JLabel keyListLabel;
-	static JLabel xboxTitle;
-	static JLabel keyboardTitle;
-	static JLabel outputTitle;
+	static JLabel magLabel,dirLabel,lmagLabel,rmagLabel,lwheelLabel,rwheelLabel,keyListLabel,xboxTitle,keyboardTitle,oculusTitle,outputTitle,oculusPosLabel,oculusRotLabel;
 	//Xbox Controller Elements
 	static XboxController xc;
-    static double mag = 0;
-	static double dir = 0;
-    static double lmag = 0;
-	static double rmag = 0;
-    static double lwheel = 0;
-	static double rwheel = 0;
-	static double oldLwheel = 0;
-	static double oldRwheel = 0;
-	static int direction = 0;
-	static int connections = 0;
+    static double mag = 0, dir = 0,lmag = 0,rmag = 0,lwheel = 0,rwheel = 0,oldLwheel = 0,oldRwheel = 0;
+	static int direction = 0,connections = 0;
+	//Oculus Elements
+	static Hmd oculus;
 	//RaspberryPi IP-address
 	static String address = "192.168.1.201";
 	//list that keeps all current pressed keyboard buttons
 	static ArrayList<String> keyList = new ArrayList<String>();
 	
 	//Constructor
-    public EmbeddedController(){
+    public EmbeddedController() throws InterruptedException{
     	createGUI();
-    	xc = new XboxController();	   
+    	System.out.println("Telepresence Controller - University of Antwerp");
+    	System.out.println("--------------------------------------------------------");
+    	System.out.println("Xbox 360 Controller for Java Library - by Aegidius Plüss");
+    	System.out.println("--------------------------------------------------------");
+    	xc = new XboxController();	 		 
+    	System.out.println("--------------------------------------------------------");
     	// Left thumb deadzone to ignore small input by moving controller.
     	xc.setLeftThumbDeadZone(0.2);
+    	//setup Oculus Rift Controller
     	xboxControllerListener();    	
     	keyboardListener();
+    	System.out.println("Oculus Rift for Java Library - Brad Davis");
+    	System.out.println("--------------------------------------------------------");
+    	OculusListener();
+
 	}
+    
+
 	
 	//create the GUI
 	public static void createGUI(){
@@ -67,9 +69,13 @@ public class EmbeddedController{
         rwheelLabel = new JLabel("Right Wheel Power:0.0\n");
         xboxTitle = new JLabel("Xbox Input\n");
         keyboardTitle = new JLabel("Keyboard Input\n");
+        oculusTitle = new JLabel("Oculus Input\n");
         outputTitle = new JLabel("Wheel Speed Output\n");
+        oculusPosLabel = new JLabel("Oculus Position Output: 0 0 0\n");
+        oculusRotLabel = new JLabel("Oculus Rotation Output: 0 0 0\n");
         xboxTitle.setFont(xboxTitle.getFont().deriveFont(xboxTitle.getFont().getStyle() | Font.ITALIC));
         keyboardTitle.setFont(keyboardTitle.getFont().deriveFont(keyboardTitle.getFont().getStyle() | Font.ITALIC));
+        oculusTitle.setFont(oculusTitle.getFont().deriveFont(oculusTitle.getFont().getStyle() | Font.ITALIC));
         outputTitle.setFont(outputTitle.getFont().deriveFont(outputTitle.getFont().getStyle() | Font.ITALIC));
         box.add(xboxTitle);
         box.add(magLabel);
@@ -80,11 +86,15 @@ public class EmbeddedController{
         box.add(keyboardTitle);
         box.add(keyListLabel);
         box.add(new JLabel(" "));
+        box.add(oculusTitle);
+        box.add(oculusPosLabel);
+        box.add(oculusRotLabel);
+        box.add(new JLabel(" "));
         box.add(outputTitle);
         box.add(lwheelLabel);
         box.add(rwheelLabel);
         frame.add(box);
-        frame.setSize(new Dimension(400,230));
+        frame.setSize(new Dimension(400,400));
         frame.setLocationRelativeTo(null);
         frame.setIconImage(Toolkit.getDefaultToolkit().getImage("./lib/xbox.png"));
         frame.setVisible(true);        
@@ -106,7 +116,7 @@ public class EmbeddedController{
         });        
     }	
 	
-	//Listener for input of controller
+	//Listener for input of Xbox controller
 	public void xboxControllerListener(){
 			xc.addXboxControllerListener(new XboxControllerAdapter(){
     		
@@ -141,13 +151,50 @@ public class EmbeddedController{
     		//listens to changes in the connection of the controller and displays messages on loss of connection or connecting restored.
     		public void isConnected(boolean connected){
     	        if (!connected)
+    	        {
+    	        	System.out.println("Xbox controller not connected.");
     	        	JOptionPane.showMessageDialog(null,"Xbox controller not connected.","Connection Lost",JOptionPane.ERROR_MESSAGE);
-    	        else{
+    	        }else{
     	        	xc.vibrate(50000, 50000, 300);
     	        }
     		}
     	});
 	}
+	
+	//Listener for input of Oculus Positional Tracking
+    public void OculusListener() throws IllegalStateException{
+        try{
+        	//initialize the Oculus
+        	Hmd.initialize();
+        	oculus = Hmd.create();
+        	//get information about the device
+            HmdDesc oculusDesc = oculus.getDesc();            
+            System.out.println("Version:" + new String(oculusDesc.ProductName).toString().trim());
+            System.out.println("Resolution:" + oculusDesc.Resolution.w + "x" + oculusDesc.Resolution.h);
+            System.out.println("RefreshRate:" + oculusDesc.DisplayRefreshRate);
+            System.out.println("--------------------------------------------------------");
+            oculus.configureTracking();
+            //get position information and update GUI
+           	while(true){
+              TrackingState trackingState = oculus.getTrackingState(0);
+              OvrVector3f position = trackingState.HeadPose.Pose.Position;
+              OvrQuaternionf rotation = trackingState.HeadPose.Pose.Orientation;
+              position.x *= 100.0f;
+              position.y *= 100.0f;
+              position.z *= 100.0f;
+              rotation.x *= 100.0f;
+              rotation.y *= 100.0f;
+              rotation.z *= 100.0f;
+              oculusPosLabel.setText("Oculus Position Output: " + (int)position.x + ", " + (int)position.y + " " + (int)position.z + "\n");
+              oculusRotLabel.setText("Oculus Rotation Output: " + (int)rotation.x + ", " + (int)rotation.y + " " + (int)rotation.z + "\n");
+            }
+        //error for when oculus is not found or SDK Runtime hasn't been launched
+        }catch (IllegalStateException l){
+        	System.out.println("no Oculus SDK detected!");
+        	JOptionPane.showMessageDialog(null,"Oculus not connected or SDK not started.","Oculus Error",JOptionPane.INFORMATION_MESSAGE);
+        	System.out.println("----------------------------------------------------");
+        }
+    }
 	
 	//helper method to get index of certain searched object in arraylist
 	public int getIndexByname(String pName)
@@ -446,7 +493,7 @@ public class EmbeddedController{
         clientSocket.close();
 	}
 	
-    public static void main(String[] args){
+    public static void main(String[] args) throws InterruptedException{
     	new EmbeddedController();    	
     }
 }
