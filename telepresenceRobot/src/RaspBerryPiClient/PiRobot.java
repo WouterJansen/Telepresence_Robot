@@ -23,7 +23,6 @@ public class PiRobot {
         public PiRobot() throws IOException{
                 System.out.println("Starting serial communication.");
                 // create an instance of the serial communications class
-
                 try {
                 	// open the default serial port provided on the GPIO header, default rpi baud rate.
                 	serial.open(Serial.DEFAULT_COM_PORT, 115200);
