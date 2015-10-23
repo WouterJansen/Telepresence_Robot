@@ -40,7 +40,7 @@ public class EmbeddedController{
     	createGUI();
     	System.out.println("Telepresence Controller - University of Antwerp");
     	System.out.println("--------------------------------------------------------");
-    	System.out.println("Xbox 360 Controller for Java Library - by Aegidius Plüss");
+    	System.out.println("Xbox 360 Controller for Java Library - By Aegidius Plüss");
     	System.out.println("--------------------------------------------------------");
     	xc = new XboxController();
     	System.out.println("--------------------------------------------------------");
@@ -49,7 +49,7 @@ public class EmbeddedController{
     	//setup Oculus Rift Controller
     	xboxControllerListener();    	
     	keyboardListener();
-    	System.out.println("Oculus Rift for Java Library - Brad Davis");
+    	System.out.println("Oculus Rift for Java Library - By Brad Davis");
     	System.out.println("--------------------------------------------------------");
     	OculusListener();
 
@@ -58,7 +58,7 @@ public class EmbeddedController{
 
 	
 	//create the GUI
-	public static void createGUI(){
+	public void createGUI(){
     	frame = new JFrame("Teleprecence Robot");
         magLabel = new JLabel("Left Analog Magnitude:0.0\n");
         dirLabel = new JLabel("Left Analog Direction:0.0\n");
@@ -94,7 +94,7 @@ public class EmbeddedController{
         box.add(lwheelLabel);
         box.add(rwheelLabel);
         frame.add(box);
-        frame.setSize(new Dimension(400,400));
+        frame.setSize(new Dimension(400,320));
         frame.setLocationRelativeTo(null);
         frame.setIconImage(Toolkit.getDefaultToolkit().getImage("./lib/xbox.png"));
         frame.setVisible(true);        
@@ -239,6 +239,7 @@ public class EmbeddedController{
 				switch(e.getKeyCode()){
 				case KeyEvent.VK_F12:											//recenter oculus
 					oculus.recenterPose();
+					break;
 				case KeyEvent.VK_UP:  											// up arrow key
 					if(keyList.contains("up") == false)keyList.add("up");		//if the key is already part of keyList, don't add it again.
 					if(keyList.contains("left")){								//if left is also being pressed, then set direction as well.
@@ -322,7 +323,7 @@ public class EmbeddedController{
 
 			//listens for keys being released.
 			public void keyReleased(KeyEvent e) {
-				switch(e.getKeyCode()){
+				switch(e.getKeyCode()){												
 				case KeyEvent.VK_UP:											// up arrow key
 					keyList.remove(getIndexByname("up"));						//if key is released, remove it from keylist (uses helper function)
 					if(keyList.contains("up") == false && keyList.contains("down") == false){	//if no up/down keys are pressed, reset all values.
@@ -412,7 +413,7 @@ public class EmbeddedController{
 	}
 	
 	//Updates the left & right wheel power based on the input
-	public static void updateSpeeds(){		
+	public void updateSpeeds(){		
 		// if total outcome is forwards
 		if((rmag - lmag) > 0){
 			//right
@@ -499,7 +500,7 @@ public class EmbeddedController{
 	}
 	
 	//sends the wheel speeds to the Raspberry Pi over UDP
-	public static void UDPSend() throws IOException{
+	public void UDPSend() throws IOException{
 		//Both wheel-speeds combined in 1 String separated by a ","
 		String speeds = lwheel + "," + rwheel;
 		//Socket gets initialized
