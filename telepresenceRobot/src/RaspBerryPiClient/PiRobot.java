@@ -37,7 +37,6 @@ public class PiRobot {
         }
        
         public void UDPReceive() throws IOException{
-                System.out.println("udpi says hi!");
                 serverSocket = new DatagramSocket(9876);
                 //Create array to story received data
                 byte[] receiveData = new byte[1024];
@@ -50,9 +49,10 @@ public class PiRobot {
                         //Store data in string
                         String clientSentence = new String(receivePacket.getData(),0,receivePacket.getLength());
                         //print the received data
-                        System.out.println("Received: " + clientSentence);
+                        System.out.println("Received " + count + ": " + clientSentence);
                         //send data over Uart.
                         UartSend(clientSentence);
+                        count = count + 1;
                 }       
         }
         
