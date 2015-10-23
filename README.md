@@ -13,5 +13,6 @@ This project has a few modules:
 * Students: Wouter Jansen, Mats de Meyer, Ewoud Delabastita, Rens Baeyens, Dries Van Gestel
 * University : Eric Paillet
 * Libraries:
-  *
+  * Pi4J: http://pi4j.com/
+  * Xbox 360 Controller for Java: http://www.aplu.ch/home/apluhomex.jsp?site=36
 
