@@ -8,6 +8,9 @@ This project has a few modules:
 * **The Motor Controller**: In this case a Atmel Microprocessor will receive the wheelspeed data from the serial communication with the RS-485 and use it to control the wheel-motors of the wheelchair.
 * **Camera system**: The embedded controller, in this case a raspberry Pi has 2 camera's attached to it. This video stream can be send to the input controller to be viewed on a monitor or through the Oculus Rift.
 
+# What can be find in this Git?
+This git has the source code for the 3 controllers. Input Controller(ControllerClient Package),the Embedded Controller(RaspBerryPiClient) and Motor Controller. The camera system has parts in both the input controller and the embedded controller. 
+
 
 # Credits
 * Students: Wouter Jansen, Mats de Meyer, Ewoud Delabastita, Rens Baeyens, Dries Van Gestel
