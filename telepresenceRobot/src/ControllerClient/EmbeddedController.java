@@ -86,7 +86,7 @@ public class EmbeddedController{
         frame.add(box);
         frame.setSize(new Dimension(400,230));
         frame.setLocationRelativeTo(null);
-        frame.setIconImage(Toolkit.getDefaultToolkit().getImage("xbox.png"));
+        frame.setIconImage(Toolkit.getDefaultToolkit().getImage("./lib/xbox.png"));
         frame.setVisible(true);        
 
         //displays cancel window on closing program
