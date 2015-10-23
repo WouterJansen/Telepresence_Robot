@@ -42,7 +42,7 @@ public class EmbeddedController{
     	System.out.println("--------------------------------------------------------");
     	System.out.println("Xbox 360 Controller for Java Library - by Aegidius Plüss");
     	System.out.println("--------------------------------------------------------");
-    	xc = new XboxController();	 		 
+    	xc = new XboxController();
     	System.out.println("--------------------------------------------------------");
     	// Left thumb deadzone to ignore small input by moving controller.
     	xc.setLeftThumbDeadZone(0.2);
@@ -120,6 +120,11 @@ public class EmbeddedController{
 	public void xboxControllerListener(){
 			xc.addXboxControllerListener(new XboxControllerAdapter(){
     		
+    		//listens to changes in the back button. This resets the oculus tracking.
+    		public void back(boolean pressed){
+    			oculus.recenterPose();
+    		}
+    		
     		//listens to changes in the left thumbs magnitude reading
     		public void leftThumbMagnitude(double magnitude){
     			mag = Math.round(magnitude * 100.0) / 100.0;
@@ -174,6 +179,7 @@ public class EmbeddedController{
             System.out.println("RefreshRate:" + oculusDesc.DisplayRefreshRate);
             System.out.println("--------------------------------------------------------");
             oculus.configureTracking();
+            oculus.recenterPose();
             //get position information and update GUI
            	while(true){
               TrackingState trackingState = oculus.getTrackingState(0);
@@ -191,7 +197,23 @@ public class EmbeddedController{
         //error for when oculus is not found or SDK Runtime hasn't been launched
         }catch (IllegalStateException l){
         	System.out.println("no Oculus SDK detected!");
-        	JOptionPane.showMessageDialog(null,"Oculus not connected or SDK not started.","Oculus Error",JOptionPane.INFORMATION_MESSAGE);
+        	JOptionPane pane = new JOptionPane("Oculus not connected or SDK not started.",JOptionPane.DEFAULT_OPTION,JOptionPane.INFORMATION_MESSAGE, null, new Object[]{}, null);
+        	final JDialog dialog = pane.createDialog("Oculus Error");
+        	new Thread(new Runnable()
+            {
+              public void run()
+              {
+                try
+                {
+                  Thread.sleep(3000);
+                  dialog.dispose();
+                }
+                catch ( Throwable th )
+                {
+                }
+              }
+            }).start();
+        	dialog.setVisible(true);    
         	System.out.println("----------------------------------------------------");
         }
     }
@@ -215,6 +237,8 @@ public class EmbeddedController{
 			//listens for keys being pressed
 			public void keyPressed(KeyEvent e) {
 				switch(e.getKeyCode()){
+				case KeyEvent.VK_F12:											//recenter oculus
+					oculus.recenterPose();
 				case KeyEvent.VK_UP:  											// up arrow key
 					if(keyList.contains("up") == false)keyList.add("up");		//if the key is already part of keyList, don't add it again.
 					if(keyList.contains("left")){								//if left is also being pressed, then set direction as well.
