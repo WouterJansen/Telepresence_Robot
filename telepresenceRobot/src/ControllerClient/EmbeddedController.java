@@ -59,7 +59,7 @@ public class EmbeddedController{
 	
 	//create the GUI
 	public void createGUI(){
-    	frame = new JFrame("Teleprecence Robot");
+    	frame = new JFrame("Telepresence Robot");
         magLabel = new JLabel("Left Analog Magnitude:0.0\n");
         dirLabel = new JLabel("Left Analog Direction:0.0\n");
         lmagLabel = new JLabel("Left Trigger Magnitude:0.0\n");
