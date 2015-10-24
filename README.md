@@ -11,6 +11,8 @@ This project has a few modules:
 # What can be found in this Git?
 This git has the source code for the 3 controllers. Input Controller(ControllerClient Package),the Embedded Controller(RaspBerryPiClient) and Motor Controller. The camera system has parts in both the input controller and the embedded controller. 
 
+# Requirements
+* Oculus Runtime 0.7 or higher
 
 # Credits
 * Students: Wouter Jansen, Mats de Meyer, Ewoud Delabastita, Rens Baeyens, Dries Van Gestel
