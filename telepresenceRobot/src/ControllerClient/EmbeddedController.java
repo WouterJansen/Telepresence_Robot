@@ -193,11 +193,12 @@ public class EmbeddedController{
               rotation.z *= 100.0f;
               oculusPosLabel.setText("Oculus Position Output: " + (int)position.x + ", " + (int)position.y + " " + (int)position.z + "\n");
               oculusRotLabel.setText("Oculus Rotation Output: " + (int)rotation.x + ", " + (int)rotation.y + " " + (int)rotation.z + "\n");
-            }
+              OculusRotConverter(rotation); 
+           	}
         //error for when oculus is not found or SDK Runtime hasn't been launched
         }catch (IllegalStateException l){
-        	System.out.println("no Oculus SDK detected!");
-        	JOptionPane pane = new JOptionPane("Oculus not connected or SDK not started.",JOptionPane.DEFAULT_OPTION,JOptionPane.INFORMATION_MESSAGE, null, new Object[]{}, null);
+        	System.out.println("no Oculus or active Runtime detected!");
+        	JOptionPane pane = new JOptionPane("Oculus not connected or active Runtime not started.",JOptionPane.DEFAULT_OPTION,JOptionPane.INFORMATION_MESSAGE, null, new Object[]{}, null);
         	final JDialog dialog = pane.createDialog("Oculus Error");
         	new Thread(new Runnable()
             {
@@ -214,8 +215,33 @@ public class EmbeddedController{
               }
             }).start();
         	dialog.setVisible(true);    
-        	System.out.println("----------------------------------------------------");
+        	System.out.println("--------------------------------------------------------");
         }
+    }
+    
+    //function to convert the oculus rotation to controller input
+    public void OculusRotConverter(OvrQuaternionf rotation){
+    	if(rotation.y > 15 && rotation.y < 50){  //we have a dead-zone of 30degrees
+    		mag = Math.abs(rotation.y) / 50;     //if the rotation is between 15 and 50, then the magnitude depends on the angle.
+    		dir= 90;
+    	}
+    	else if (rotation.y > 50 && rotation.y < 99){ //above 50 the magnitude stays maximum
+    		mag = 1;
+    		dir = 90;
+    	}
+    	else if(rotation.y < -15 && rotation.y > -50){ // same applies for rotation to the left.
+    		mag = Math.abs(rotation.y) / 50;
+    		dir = 270;
+    	}
+    	else if(rotation.y < -50 && rotation.y > -99){
+    		mag = 1;
+    		dir = 270;
+    	}
+    	else{  // in all other cases the rotation is 0.
+    		dir = 0;
+    		mag = 0;
+    	}    	
+    	updateSpeeds();    	
     }
 	
 	//helper method to get index of certain searched object in arraylist
