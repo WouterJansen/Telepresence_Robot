@@ -104,8 +104,13 @@ public class EmbeddedController{
         box.add(rwheelLabel);
         frame.add(box);
         frame.setSize(new Dimension(400,350));
-        frame.setLocationRelativeTo(null); 
-        frame.setIconImage(Toolkit.getDefaultToolkit().getImage("./lib/icon64.png"));
+        frame.setLocationRelativeTo(null);
+        ArrayList<Image> imageList = new ArrayList<Image>();
+        imageList.add(Toolkit.getDefaultToolkit().getImage("./lib/icon16.png"));
+        imageList.add(Toolkit.getDefaultToolkit().getImage("./lib/icon64.png"));
+        imageList.add(Toolkit.getDefaultToolkit().getImage("./lib/icon128.png"));
+        imageList.add(Toolkit.getDefaultToolkit().getImage("./lib/icon256.png"));
+        frame.setIconImages(imageList);
         frame.setVisible(true);          
 
         //displays cancel window on closing program
