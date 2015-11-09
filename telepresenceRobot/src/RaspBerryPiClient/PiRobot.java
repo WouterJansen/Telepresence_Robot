@@ -22,10 +22,10 @@ public class PiRobot {
         
         public PiRobot() throws IOException{
         		//starting video stream
-        		System.out.println("Starting videostream...");
-        		Runtime.getRuntime().exec("#!/bin/bash");
-        		Runtime.getRuntime().exec("clear");
-        		Runtime.getRuntime().exec("raspivid -t 999999 -w 1080 -h 720 -fps 30 -hf -b 20000000 -o - | gst-launch-1.0 -e -vvvv fdsrc ! h264parse ! rtph264pay pt=96 config-interval=5 ! udpsink host=192.168.1.36 port=9600");
+//        		System.out.println("Starting videostream...");
+//        		Runtime.getRuntime().exec("#!/bin/bash");
+//        		Runtime.getRuntime().exec("clear");
+//        		Runtime.getRuntime().exec("raspivid -t 999999 -w 1080 -h 720 -fps 30 -hf -b 20000000 -o - | gst-launch-1.0 -e -vvvv fdsrc ! h264parse ! rtph264pay pt=96 config-interval=5 ! udpsink host=192.168.1.36 port=9600");
                 System.out.println("Starting serial communication...");
                 // create an instance of the serial communications class
                 try {
