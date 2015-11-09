@@ -136,8 +136,11 @@ public class EmbeddedController{
     		
     		//listens to changes in the back button. This resets the oculus tracking.
     		public void back(boolean pressed){
-    			if(oculusConnected == true)oculus.recenterPose();
-    			System.out.println("Oculus Recentered");
+    			if(oculusConnected == true){
+    				oculus.recenterPose();
+    				System.out.println("Oculus Recentered");
+    			}
+    			
     		}
     		
     		//listens to changes in the start button reading to enable or disable oculus tracking.
@@ -309,8 +312,11 @@ public class EmbeddedController{
 				public void keyPressed(KeyEvent e) {
 					switch(e.getKeyCode()){
 					case KeyEvent.VK_F12:											//recenter Oculus
-						if(oculusConnected == true)oculus.recenterPose();
-						System.out.println("Oculus Recentered");
+						if(oculusConnected == true){
+							oculus.recenterPose();
+							System.out.println("Oculus Recentered");
+						}
+						
 						break;
 					case KeyEvent.VK_F11:		
 						//enable or disable Oculus Tracking
