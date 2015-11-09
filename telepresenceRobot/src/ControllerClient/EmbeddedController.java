@@ -223,6 +223,7 @@ public class EmbeddedController{
     	        	System.out.println("Xbox controller not connected.");
     	        	JOptionPane.showMessageDialog(null,"Xbox controller not connected.","Connection Lost",JOptionPane.ERROR_MESSAGE);
     	        }else{
+    	        	System.out.println("Xbox controller connected.");
     	        	xc.vibrate(50000, 50000, 300);
     	        }
     		}
