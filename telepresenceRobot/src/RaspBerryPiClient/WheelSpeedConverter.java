@@ -14,17 +14,21 @@ public class WheelSpeedConverter {
 		float lwheel = Float.parseFloat(parts[0]);
 		float rwheel = Float.parseFloat(parts[1]);
 		
-		//Determine direction
-		int wheelDirection = 0;
-		if(lwheel >= 0)wheelDirection = 1;
-		else if (lwheel < 0)wheelDirection = -1;
+		//Determine direction of wheels
+		int wheelDirectionL = 0;
+		int wheelDirectionR = 0;
+		if(lwheel >= 0)wheelDirectionL = 1;
+		else if (lwheel < 0)wheelDirectionL = -1;
+		if(rwheel >= 0)wheelDirectionR = 1;
+		else if (rwheel < 0)wheelDirectionR = -1;
+		
 		
 		//Conversion of number between 0 and 1 to between 0 and 255
 		int lwheelC = Math.round((Math.abs(lwheel)) * 255);
 		int rwheelC = Math.round((Math.abs(rwheel)) * 255);
 		
 		//combining into one string
-		String combined = wheelDirection + " " + lwheelC + " " + rwheelC;				
+		String combined = wheelDirectionL + " " + wheelDirectionR + " " + lwheelC + " " + rwheelC;				
 		return combined;
 	}
 	
