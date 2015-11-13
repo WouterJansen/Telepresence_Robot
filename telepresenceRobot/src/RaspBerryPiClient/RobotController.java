@@ -10,7 +10,7 @@ import com.pi4j.io.serial.SerialFactory;
 import com.pi4j.io.serial.SerialPortException;
  
  
-public class PiRobot {
+public class RobotController {
        
         static double lwheelOld = 0;
         static double rwheelOld = 0;
@@ -20,7 +20,7 @@ public class PiRobot {
         static int count = 0;
         final Serial serial = SerialFactory.createInstance();
         
-        public PiRobot() throws IOException{
+        public RobotController() throws IOException{
         		//starting video stream
         		System.out.println("Starting videostream...");
  //       		Runtime.getRuntime().exec("#!/bin/bash");
@@ -118,6 +118,6 @@ public class PiRobot {
        
    public static void main(String argv[]) throws Exception
       {
-         new PiRobot();
+         new RobotController();
       }
 }
