@@ -22,6 +22,6 @@
 	<classpathentry kind="lib" path="lib/XboxController.jar"/>
 	<classpathentry kind="lib" path="lib/oculusJava.jar"/>
 	<classpathentry kind="lib" path="lib/jna-4.2.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Mats/git/telepresenceRobot/telepresenceRobot/lib/jnativehook-2.0.3.jar"/>
+	<classpathentry kind="lib" path="lib/jnativehook-2.0.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
