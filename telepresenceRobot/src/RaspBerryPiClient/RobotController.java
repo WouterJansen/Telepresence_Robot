@@ -24,25 +24,7 @@ public class RobotController {
         		//starting video stream
         		System.out.println("Starting Stream...");
 
-            	String command = "./start_stream.sh";
-
-            	StringBuffer output = new StringBuffer();
-
-            	Process p;
-            	try {
-                    p = Runtime.getRuntime().exec(command);
-                    p.waitFor();
-                    BufferedReader reader =
-                        new BufferedReader(new InputStreamReader(p.getInputStream()));
-
-                    String line = "";
-                    while ((line = reader.readLine())!= null) {
-                            output.append(line + "\n");
-                    }
-
-            	} catch (Exception e) {
-            		e.printStackTrace();
-            	}
+        		new StartStream().start();
 
                 System.out.println("Starting serial communication...");
                 // create an instance of the serial communications class
