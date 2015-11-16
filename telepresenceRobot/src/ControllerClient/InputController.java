@@ -42,21 +42,20 @@ public class InputController {
 		wheelSpeeds = new WheelSpeeds();
 		System.out.println("\nDetected OS: " + getOsName() + ". Loading supported modules...\n");
 		if(isWindows()){
-//			gui = new GUI();
-//			WinKeyboardListener();
-//			System.out.println("--------------------------------------------------------");
-//			System.out.println("Xbox 360 Controller for Java Library - By Aegidius Plüss");
-//			System.out.println("--------------------------------------------------------");
-//			xc = new XboxController();
-//			// Left thumb deadzone to ignore small input by moving controller.
-//			xc.setLeftThumbDeadZone(0.2);
-//			WinXboxContListener();
-//			System.out.println("\n--------------------------------------------------------");
-//			System.out.println("Oculus Rift for Java Library - By Brad Davis");
-//			System.out.println("--------------------------------------------------------");
-//			//setup Oculus Rift Controller
-//			OculusListener();
-			LinKeyboardListener();
+		gui = new GUI();
+		WinKeyboardListener();
+		System.out.println("--------------------------------------------------------");
+		System.out.println("Xbox 360 Controller for Java Library - By Aegidius Plüss");
+		System.out.println("--------------------------------------------------------");
+		xc = new XboxController();
+		// Left thumb deadzone to ignore small input by moving controller.
+		xc.setLeftThumbDeadZone(0.2);
+		WinXboxContListener();
+		System.out.println("\n--------------------------------------------------------");
+		System.out.println("Oculus Rift for Java Library - By Brad Davis");
+		System.out.println("--------------------------------------------------------");
+		//setup Oculus Rift Controller
+		OculusListener();
 		}else{
 			LinKeyboardListener();
 			LinXboxContListener();
