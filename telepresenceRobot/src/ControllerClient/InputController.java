@@ -41,7 +41,7 @@ public class InputController {
 		input = new Input();
 		wheelSpeeds = new WheelSpeeds();
 		System.out.println("\nDetected OS: " + getOsName() + ". Loading supported modules...\n");
-		if(isWindows()){
+		if(!isWindows()){
 		gui = new GUI();
 		WinKeyboardListener();
 		System.out.println("--------------------------------------------------------");
@@ -492,20 +492,16 @@ public class InputController {
 				//listens for keys being pressed
 				public void nativeKeyPressed(NativeKeyEvent e) {
 					
-					//if (e.getKeyCode() == NativeKeyEvent.VK_ESCAPE) {
-						
-					//}
 					
-					/*
 					switch(e.getKeyCode()){
-					case NativeKeyEvent.VK_F12:											//recenter Oculus
+					case NativeKeyEvent.VC_F12:											//recenter Oculus
 						if(oculusConnected == true){
 							oculus.recenterPose();
 							System.out.println("Oculus Recentered");
 						}
 
 						break;
-					case KeyEvent.VK_F11:		
+					case NativeKeyEvent.VC_F11:		
 						//enable or disable Oculus Tracking
 						if(oculusConnected == true){
 							oculusEnable ^= true;
@@ -513,7 +509,7 @@ public class InputController {
 							gui.oculusEnableTitle.setText("Oculus Enabled: " + oculusEnable + "\n");
 						}
 						break;
-					case KeyEvent.VK_Z:  											// up
+					case NativeKeyEvent.VC_Z:  											// up
 						if(keyList.contains("Z") == false)keyList.add("Z");		//if the key is already part of keyList, don't add it again.
 						if(keyList.contains("Q")){								//if left is also being pressed, then set direction as well.
 							input.mag = 1;
@@ -536,7 +532,7 @@ public class InputController {
 						}
 						updateSpeeds();
 						break;			
-					case KeyEvent.VK_S:											// down
+					case NativeKeyEvent.VC_S:											// down
 						if(keyList.contains("S") == false)keyList.add("S");	//if the key is already part of keyList, don't add it again.
 						if(keyList.contains("Q")){								//if left is also being pressed, then set direction as well.
 							input.mag = 1;
@@ -559,7 +555,7 @@ public class InputController {
 						}
 						updateSpeeds();
 						break;
-					case KeyEvent.VK_Q:											// left 
+					case NativeKeyEvent.VC_Q:											// left 
 						if(keyList.contains("Q") == false)keyList.add("Q");	//if the key is already part of keyList, don't add it again.
 						input.mag = 1;
 						input.dir = 270;
@@ -575,7 +571,7 @@ public class InputController {
 						}
 						updateSpeeds();
 						break;
-					case KeyEvent.VK_D:											// right 
+					case NativeKeyEvent.VC_D:											// right 
 						if(keyList.contains("D") == false)keyList.add("D");	//if the key is already part of keyList, don't add it again.
 						input.mag = 1;
 						input.dir = 90;
@@ -591,14 +587,14 @@ public class InputController {
 						}
 						updateSpeeds();
 						break;
-					case KeyEvent.VK_A:											// left (mid rotation)
+					case NativeKeyEvent.VC_A:											// left (mid rotation)
 						if(keyList.contains("A") == false)keyList.add("A");	//if the key is already part of keyList, don't add it again.
 						input.midmag = 1;
 						input.mag = 1;
 						input.dir = 270;
 						updateSpeeds();
 						break;
-					case KeyEvent.VK_E:											// right (mid rotation)
+					case NativeKeyEvent.VC_E:											// right (mid rotation)
 						if(keyList.contains("E") == false)keyList.add("E");	//if the key is already part of keyList, don't add it again.
 						input.midmag = 1;
 						input.mag = 1;
@@ -606,13 +602,13 @@ public class InputController {
 						updateSpeeds();
 						break;
 					}	
-					*/			
+								
 				}
 
 				//listens for keys being released.
 				public void nativeKeyReleased(NativeKeyEvent e) {
 					switch(e.getKeyCode()){												
-					case KeyEvent.VK_Z:									// up
+					case NativeKeyEvent.VC_Z:									// up
 						keyList.remove(getIndexByname("Z"));						//if key is released, remove it from keylist (uses helper function)
 						if(keyList.contains("Z") == false && keyList.contains("S") == false){	//if no up/down keys are pressed, reset all values.
 							input.mag = 0;
@@ -628,7 +624,7 @@ public class InputController {
 							updateSpeeds();
 						}
 						break;			
-					case KeyEvent.VK_S:											// down 
+					case NativeKeyEvent.VC_S:											// down 
 						keyList.remove(getIndexByname("S"));						//if key is released, remove it from keylist (uses helper function)
 						if(keyList.contains("Z") == false && keyList.contains("S") == false){	//if no up/down keys are pressed, reset all values.
 							input.mag = 0;
@@ -644,7 +640,7 @@ public class InputController {
 							updateSpeeds();
 						}
 						break;	
-					case KeyEvent.VK_Q:											// left 
+					case NativeKeyEvent.VC_Q:											// left 
 						keyList.remove(getIndexByname("Q"));						//if key is released, remove it from keylist (uses helper function)
 						if(keyList.contains("Z") == false && keyList.contains("S") == false){	//if no up/down keys are pressed, reset all values.
 							input.mag = 0;
@@ -666,7 +662,7 @@ public class InputController {
 							updateSpeeds();
 						}
 						break;	
-					case KeyEvent.VK_D:											// right
+					case NativeKeyEvent.VC_D:											// right
 						keyList.remove(getIndexByname("D"));					//if key is released, remove it from keylist (uses helper function)
 						if(keyList.contains("Z") == false && keyList.contains("S") == false){	//if no up/down keys are pressed, reset all values.
 							input.mag = 0;
@@ -688,14 +684,14 @@ public class InputController {
 							updateSpeeds();
 						}
 						break;
-					case KeyEvent.VK_A:											// left (mid rotation)
+					case NativeKeyEvent.VC_A:											// left (mid rotation)
 						keyList.remove(getIndexByname("A"));					//if key is released, remove it from keylist (uses helper function)
 						input.midmag = 0;
 						input.mag = 0;
 						input.dir = 0;
 						updateSpeeds();
 						break;
-					case KeyEvent.VK_E:											// right (mid rotation)
+					case NativeKeyEvent.VC_E:											// right (mid rotation)
 						keyList.remove(getIndexByname("E"));					//if key is released, remove it from keylist (uses helper function)
 						input.midmag = 0;
 						input.mag = 0;
