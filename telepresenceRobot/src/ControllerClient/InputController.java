@@ -11,6 +11,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 import org.jnativehook.keyboard.NativeKeyEvent;
@@ -31,8 +35,9 @@ public class InputController {
 	public boolean oculusEnable = false;
 	//RaspberryPi IP-address
 	public String address = "192.168.1.201";
+	public int connections = 0;
 	//list that keeps all current pressed keyboard buttons
-	public ArrayList<String> keyList = new ArrayList<String>();
+	static ArrayList<String> keyList = new ArrayList<String>();
 	public static String OS = null;
 
 	//Constructor
@@ -41,38 +46,38 @@ public class InputController {
 		input = new Input();
 		wheelSpeeds = new WheelSpeeds();
 		System.out.println("\nDetected OS: " + getOsName() + ". Loading supported modules...\n");
-		if(!isWindows()){
-		gui = new GUI();
-		WinKeyboardListener();
-		System.out.println("--------------------------------------------------------");
-		System.out.println("Xbox 360 Controller for Java Library - By Aegidius Plüss");
-		System.out.println("--------------------------------------------------------");
-		xc = new XboxController();
-		// Left thumb deadzone to ignore small input by moving controller.
-		xc.setLeftThumbDeadZone(0.2);
-		WinXboxContListener();
-		System.out.println("\n--------------------------------------------------------");
-		System.out.println("Oculus Rift for Java Library - By Brad Davis");
-		System.out.println("--------------------------------------------------------");
-		//setup Oculus Rift Controller
-		OculusListener();
+		if(isWindows()){
+			gui = new GUI();
+			WinKeyboardListener();
+			System.out.println("--------------------------------------------------------");
+			System.out.println("Xbox 360 Controller for Java Library - By Aegidius Plüss");
+			System.out.println("--------------------------------------------------------");
+			xc = new XboxController();
+			// Left thumb deadzone to ignore small input by moving controller.
+			xc.setLeftThumbDeadZone(0.2);
+			WinXboxContListener();
+			System.out.println("\n--------------------------------------------------------");
+			System.out.println("Oculus Rift for Java Library - By Brad Davis");
+			System.out.println("--------------------------------------------------------");
+			//setup Oculus Rift Controller
+			OculusListener();
 		}else{
 			LinKeyboardListener();
 			LinXboxContListener();
 		}
 	}    
-	
+
 	//assistance method to get OS name
 	public static String getOsName()
-	   {
-	      if(OS == null) { OS = System.getProperty("os.name"); }
-	      return OS;
-	   }
-	
+	{
+		if(OS == null) { OS = System.getProperty("os.name"); }
+		return OS;
+	}
+
 	//assistance method to check if OS is Windows
 	public static boolean isWindows()
 	{
-	      return getOsName().startsWith("Windows");
+		return getOsName().startsWith("Windows");
 	}
 
 	//Listener for input of Xbox controller on Windows
@@ -93,35 +98,45 @@ public class InputController {
 				if(oculusConnected == true){
 					oculusEnable ^= true;	
 					System.out.println("Oculus Enabled:" + oculusEnable);
-					gui.oculusEnableTitle.setText("Oculus Enabled: " + oculusEnable + "\n");
+					if(isWindows()){
+						gui.oculusEnableTitle.setText("Oculus Enabled: " + oculusEnable + "\n");
+					}
 				}
 			}
 
 			//listens to changes in the left thumbs magnitude reading
 			public void leftThumbMagnitude(double magnitude){
 				input.mag = Math.round(magnitude * 100.0) / 100.0;
-				gui.magLabel.setText("Left Analog magnitude: " + input.mag + "\n");
+				if(isWindows()){
+					gui.magLabel.setText("Left Analog magnitude: " + input.mag + "\n");
+				}
 				updateSpeeds();
 			}
 
 			//listens to changes in the left thumbs direction reading
 			public void leftThumbDirection(double direction){
 				input.dir = Math.round(direction * 100.0) / 100.0;
-				gui.dirLabel.setText("Left Analog Direction: " + input.dir + "\n");
+				if(isWindows()){
+					gui.dirLabel.setText("Left Analog Direction: " + input.dir + "\n");
+				}
 				updateSpeeds();
 			}   
 
 			//listens to changes in the left triggers magnitude reading
 			public void leftTrigger(double lmagnitude){
 				input.lmag = Math.round(lmagnitude * 100.0) / 100.0;
-				gui.lmagLabel.setText("Left Trigger Magnitude: " + input.lmag + "\n");
+				if(isWindows()){
+					gui.lmagLabel.setText("Left Trigger Magnitude: " + input.lmag + "\n");
+				}
 				updateSpeeds();
 			}
 
 			//listens to changes in the right triggers magnitude reading
 			public void rightTrigger(double rmagnitude){
 				input.rmag = Math.round(rmagnitude * 100.0) / 100.0;
-				gui.rmagLabel.setText("Right Trigger Magnitude: " + input.rmag + "\n");
+				if(isWindows()){
+					gui.rmagLabel.setText("Right Trigger Magnitude: " + input.rmag + "\n");
+				}
 				updateSpeeds();
 			}
 
@@ -131,14 +146,18 @@ public class InputController {
 					input.midmag = 1;
 					input.mag = 1;
 					input.dir = 90;
-					gui.rshoulderLabel.setText("Right Shoulder Pressed: " + 1 + "\n");
+					if(isWindows()){
+						gui.rshoulderLabel.setText("Right Shoulder Pressed: " + 1 + "\n");
+					}
 					updateSpeeds();
 				}
 				else if(rshoulder == false){
 					input.midmag = 0;
 					input.mag = 0;
 					input.dir = 0;
-					gui.rshoulderLabel.setText("Right Shoulder Pressed: " + 0 + "\n");
+					if(isWindows()){
+						gui.rshoulderLabel.setText("Right Shoulder Pressed: " + 0 + "\n");
+					}
 					updateSpeeds();
 				}
 			}
@@ -149,14 +168,18 @@ public class InputController {
 					input.midmag = 1;
 					input.mag = 1;
 					input.dir = 270;
-					gui.lshoulderLabel.setText("Left Shoulder Pressed: " + 1 + "\n");
+					if(isWindows()){
+						gui.lshoulderLabel.setText("Left Shoulder Pressed: " + 1 + "\n");
+					}
 					updateSpeeds();
 				}
 				else if(lshoulder == false){
 					input.midmag = 0;
 					input.mag = 0;
 					input.dir = 0;
-					gui.lshoulderLabel.setText("Left Shoulder Pressed: " + 0 + "\n");
+					if(isWindows()){
+						gui.lshoulderLabel.setText("Left Shoulder Pressed: " + 0 + "\n");
+					}
 					updateSpeeds();
 				}
 			}
@@ -166,7 +189,9 @@ public class InputController {
 				if (!connected)
 				{
 					System.out.println("Xbox controller not connected.");
-					JOptionPane.showMessageDialog(null,"Xbox controller not connected.","Connection Lost",JOptionPane.ERROR_MESSAGE);
+					if(isWindows()){
+						JOptionPane.showMessageDialog(null,"Xbox controller not connected.","Connection Lost",JOptionPane.ERROR_MESSAGE);
+					}
 				}else{
 					System.out.println("Xbox controller connected.");
 					xc.vibrate(50000, 50000, 300);
@@ -174,7 +199,7 @@ public class InputController {
 			}
 		});
 	}
-	
+
 	//Listener for input of Xbox controller on Linux
 	public void LinXboxContListener(){
 	}
@@ -206,8 +231,10 @@ public class InputController {
 					rotation.x *= 100.0f;
 					rotation.y *= 100.0f;
 					rotation.z *= 100.0f;
-					gui.oculusPosLabel.setText("Oculus Position Output: " + (int)position.x + ", " + (int)position.y + " " + (int)position.z + "\n");
-					gui.oculusRotLabel.setText("Oculus Rotation Output: " + (int)rotation.x + ", " + (int)rotation.y + " " + (int)rotation.z + "\n");
+					if(isWindows()){
+						gui.oculusPosLabel.setText("Oculus Position Output: " + (int)position.x + ", " + (int)position.y + " " + (int)position.z + "\n");
+						gui.oculusRotLabel.setText("Oculus Rotation Output: " + (int)rotation.x + ", " + (int)rotation.y + " " + (int)rotation.z + "\n");
+					}
 					OculusRotConverter(rotation); 
 				}
 			}
@@ -273,7 +300,9 @@ public class InputController {
 					if(oculusConnected == true){
 						oculusEnable ^= true;
 						System.out.println("Oculus Enabled:" + oculusEnable);
-						gui.oculusEnableTitle.setText("Oculus Enabled: " + oculusEnable + "\n");
+						if(isWindows()){
+							gui.oculusEnableTitle.setText("Oculus Enabled: " + oculusEnable + "\n");
+						}
 					}
 					break;
 				case KeyEvent.VK_Z:  											// up
@@ -473,244 +502,252 @@ public class InputController {
 		});
 
 	}
-	
+
 	//keyboard input listener for Linux
 	public void LinKeyboardListener(){
-		
-			System.out.println("Listening for command line input, press zqsd or ae.");
-		
-			try {
-	            GlobalScreen.registerNativeHook();
-	        }
-	        catch (NativeHookException ex) {
-				System.err.println("There was a problem registering the native hook.");
-	            System.err.println(ex.getMessage());
-	        }
 
-	       	
-			GlobalScreen.addNativeKeyListener(new NativeKeyListener(){
-				//listens for keys being pressed
-				public void nativeKeyPressed(NativeKeyEvent e) {
-					
-					
-					switch(e.getKeyCode()){
-					case NativeKeyEvent.VC_F12:											//recenter Oculus
-						if(oculusConnected == true){
-							oculus.recenterPose();
-							System.out.println("Oculus Recentered");
-						}
+		System.out.println("Listening for command line input, press zqsd or ae.");
 
-						break;
-					case NativeKeyEvent.VC_F11:		
-						//enable or disable Oculus Tracking
-						if(oculusConnected == true){
-							oculusEnable ^= true;
-							System.out.println("Oculus Enabled:" + oculusEnable);
+		try {
+			GlobalScreen.registerNativeHook();
+		}
+		catch (NativeHookException ex) {
+			System.err.println("There was a problem registering the native hook.");
+			System.err.println(ex.getMessage());
+		}
+
+		// Clear previous logging configurations.
+		LogManager.getLogManager().reset();
+
+		// Get the logger for "org.jnativehook" and set the level to off.
+		Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
+		logger.setLevel(Level.OFF);
+
+		GlobalScreen.addNativeKeyListener(new NativeKeyListener(){
+			//listens for keys being pressed
+			public void nativeKeyPressed(NativeKeyEvent e) {
+
+
+				switch(e.getKeyCode()){
+				case NativeKeyEvent.VC_F12:											//recenter Oculus
+					if(oculusConnected == true){
+						oculus.recenterPose();
+						System.out.println("Oculus Recentered");
+					}
+
+					break;
+				case NativeKeyEvent.VC_F11:		
+					//enable or disable Oculus Tracking
+					if(oculusConnected == true){
+						oculusEnable ^= true;
+						System.out.println("Oculus Enabled:" + oculusEnable);
+						if(isWindows()){
 							gui.oculusEnableTitle.setText("Oculus Enabled: " + oculusEnable + "\n");
 						}
-						break;
-					case NativeKeyEvent.VC_Z:  											// up
-						if(keyList.contains("Z") == false)keyList.add("Z");		//if the key is already part of keyList, don't add it again.
-						if(keyList.contains("Q")){								//if left is also being pressed, then set direction as well.
-							input.mag = 1;
-							input.dir = 270;
-							input.lmag = 0;
-							input.rmag = 1;
-						}else if(keyList.contains("S") == true){					// if both up and down are pressed, nothing happens
-							input.rmag = 0;
-							input.lmag = 0;
-						}else if(keyList.contains("D")){						//if right is also being pressed, then set direction as well.
-							input.mag = 1;
-							input.dir = 90;
-							input.lmag = 0;
-							input.rmag = 1;
-						}else{
-							input.mag = 0;
-							input.dir = 0;
-							input.lmag = 0;
-							input.rmag = 1;
-						}
-						updateSpeeds();
-						break;			
-					case NativeKeyEvent.VC_S:											// down
-						if(keyList.contains("S") == false)keyList.add("S");	//if the key is already part of keyList, don't add it again.
-						if(keyList.contains("Q")){								//if left is also being pressed, then set direction as well.
-							input.mag = 1;
-							input.dir = 270;
-							input.lmag = 1;
-							input.rmag = 0;
-						}else if(keyList.contains("Z") == true){					//if both up and down are pressed, nothing happens.
-							input.rmag = 0;
-							input.lmag = 0;
-						}else if(keyList.contains("D")){						//if right is also being pressed, then set direction as well.
-							input.mag = 1;
-							input.dir = 90;
-							input.lmag = 1;
-							input.rmag = 0;
-						}else{
-							input.mag = 0;
-							input.dir = 0;
-							input.lmag = 1;
-							input.rmag = 0;
-						}
-						updateSpeeds();
-						break;
-					case NativeKeyEvent.VC_Q:											// left 
-						if(keyList.contains("Q") == false)keyList.add("Q");	//if the key is already part of keyList, don't add it again.
+					}
+					break;
+				case NativeKeyEvent.VC_Z:  											// up
+					if(keyList.contains("Z") == false)keyList.add("Z");		//if the key is already part of keyList, don't add it again.
+					if(keyList.contains("Q")){								//if left is also being pressed, then set direction as well.
 						input.mag = 1;
 						input.dir = 270;
-						if(keyList.contains("Z")){									//if up is also being pressed, then set this as well.
-							input.lmag = 0;
-							input.rmag = 1;
-						}else if(keyList.contains("S")){							//if down is also being pressed, then set this as well.
-							input.lmag = 1;
-							input.rmag = 0;
-						}else{
-							input.lmag = 0;
-							input.rmag = 0;
-						}
-						updateSpeeds();
-						break;
-					case NativeKeyEvent.VC_D:											// right 
-						if(keyList.contains("D") == false)keyList.add("D");	//if the key is already part of keyList, don't add it again.
+						input.lmag = 0;
+						input.rmag = 1;
+					}else if(keyList.contains("S") == true){					// if both up and down are pressed, nothing happens
+						input.rmag = 0;
+						input.lmag = 0;
+					}else if(keyList.contains("D")){						//if right is also being pressed, then set direction as well.
 						input.mag = 1;
 						input.dir = 90;
-						if(keyList.contains("Z")){									//if up is also being pressed, then set this as well.
-							input.lmag = 0;
-							input.rmag = 1;
-						}else if(keyList.contains("S")){							//if down is also being pressed, then set this as well.
-							input.lmag = 1;
-							input.rmag = 0;
-						}else{
-							input.lmag = 0;
-							input.rmag = 0;
-						}
-						updateSpeeds();
-						break;
-					case NativeKeyEvent.VC_A:											// left (mid rotation)
-						if(keyList.contains("A") == false)keyList.add("A");	//if the key is already part of keyList, don't add it again.
-						input.midmag = 1;
+						input.lmag = 0;
+						input.rmag = 1;
+					}else{
+						input.mag = 0;
+						input.dir = 0;
+						input.lmag = 0;
+						input.rmag = 1;
+					}
+					updateSpeeds();
+					break;			
+				case NativeKeyEvent.VC_S:											// down
+					if(keyList.contains("S") == false)keyList.add("S");	//if the key is already part of keyList, don't add it again.
+					if(keyList.contains("Q")){								//if left is also being pressed, then set direction as well.
 						input.mag = 1;
 						input.dir = 270;
-						updateSpeeds();
-						break;
-					case NativeKeyEvent.VC_E:											// right (mid rotation)
-						if(keyList.contains("E") == false)keyList.add("E");	//if the key is already part of keyList, don't add it again.
-						input.midmag = 1;
+						input.lmag = 1;
+						input.rmag = 0;
+					}else if(keyList.contains("Z") == true){					//if both up and down are pressed, nothing happens.
+						input.rmag = 0;
+						input.lmag = 0;
+					}else if(keyList.contains("D")){						//if right is also being pressed, then set direction as well.
 						input.mag = 1;
 						input.dir = 90;
-						updateSpeeds();
-						break;
-					}	
-								
-				}
-
-				//listens for keys being released.
-				public void nativeKeyReleased(NativeKeyEvent e) {
-					switch(e.getKeyCode()){												
-					case NativeKeyEvent.VC_Z:									// up
-						keyList.remove(getIndexByname("Z"));						//if key is released, remove it from keylist (uses helper function)
-						if(keyList.contains("Z") == false && keyList.contains("S") == false){	//if no up/down keys are pressed, reset all values.
-							input.mag = 0;
-							input.dir = 0;
-							input.lmag = 0;
-							input.rmag = 0;
-							updateSpeeds();
-						}else if(keyList.contains("S") == true){					//if down key is pressed when up is released, go backwards.
-							input.mag = 0;
-							input.dir = 0;
-							input.rmag = 0;
-							input.lmag = 1;
-							updateSpeeds();
-						}
-						break;			
-					case NativeKeyEvent.VC_S:											// down 
-						keyList.remove(getIndexByname("S"));						//if key is released, remove it from keylist (uses helper function)
-						if(keyList.contains("Z") == false && keyList.contains("S") == false){	//if no up/down keys are pressed, reset all values.
-							input.mag = 0;
-							input.dir = 0;
-							input.lmag = 0;
-							input.rmag = 0;
-							updateSpeeds();
-						}else if(keyList.contains("Z") == true){					//if up key is pressed when down is released, go forwards.
-							input.mag = 0;
-							input.dir = 0;
-							input.rmag = 1;
-							input.lmag = 0;
-							updateSpeeds();
-						}
-						break;	
-					case NativeKeyEvent.VC_Q:											// left 
-						keyList.remove(getIndexByname("Q"));						//if key is released, remove it from keylist (uses helper function)
-						if(keyList.contains("Z") == false && keyList.contains("S") == false){	//if no up/down keys are pressed, reset all values.
-							input.mag = 0;
-							input.dir = 0;
-							input.lmag = 0;
-							input.rmag = 0;
-							updateSpeeds();
-						}else if(keyList.contains("Z") == true){					//if up key is still pressed and left released, go forward.
-							input.mag = 0;
-							input.dir = 0;
-							input.rmag = 1;
-							input.lmag = 0;
-							updateSpeeds();
-						}else{														//if down key is still pressed and left released, go backward.
-							input.mag = 0;
-							input.dir = 0;
-							input.rmag = 0;
-							input.lmag = 1;
-							updateSpeeds();
-						}
-						break;	
-					case NativeKeyEvent.VC_D:											// right
-						keyList.remove(getIndexByname("D"));					//if key is released, remove it from keylist (uses helper function)
-						if(keyList.contains("Z") == false && keyList.contains("S") == false){	//if no up/down keys are pressed, reset all values.
-							input.mag = 0;
-							input.dir = 0;
-							input.lmag = 0;
-							input.rmag = 0;
-							updateSpeeds();
-						}else if(keyList.contains("Z") == true){					//if up key is still pressed and left released, go forward.
-							input.mag = 0;
-							input.dir = 0;
-							input.rmag = 1;
-							input.lmag = 0;
-							updateSpeeds();
-						}else{														//if down key is still pressed and left released, go backward.
-							input.mag = 0;
-							input.dir = 0;
-							input.rmag = 0;
-							input.lmag = 1;
-							updateSpeeds();
-						}
-						break;
-					case NativeKeyEvent.VC_A:											// left (mid rotation)
-						keyList.remove(getIndexByname("A"));					//if key is released, remove it from keylist (uses helper function)
-						input.midmag = 0;
+						input.lmag = 1;
+						input.rmag = 0;
+					}else{
 						input.mag = 0;
 						input.dir = 0;
-						updateSpeeds();
-						break;
-					case NativeKeyEvent.VC_E:											// right (mid rotation)
-						keyList.remove(getIndexByname("E"));					//if key is released, remove it from keylist (uses helper function)
-						input.midmag = 0;
+						input.lmag = 1;
+						input.rmag = 0;
+					}
+					updateSpeeds();
+					break;
+				case NativeKeyEvent.VC_Q:											// left 
+					if(keyList.contains("Q") == false)keyList.add("Q");	//if the key is already part of keyList, don't add it again.
+					input.mag = 1;
+					input.dir = 270;
+					if(keyList.contains("Z")){									//if up is also being pressed, then set this as well.
+						input.lmag = 0;
+						input.rmag = 1;
+					}else if(keyList.contains("S")){							//if down is also being pressed, then set this as well.
+						input.lmag = 1;
+						input.rmag = 0;
+					}else{
+						input.lmag = 0;
+						input.rmag = 0;
+					}
+					updateSpeeds();
+					break;
+				case NativeKeyEvent.VC_D:											// right 
+					if(keyList.contains("D") == false)keyList.add("D");	//if the key is already part of keyList, don't add it again.
+					input.mag = 1;
+					input.dir = 90;
+					if(keyList.contains("Z")){									//if up is also being pressed, then set this as well.
+						input.lmag = 0;
+						input.rmag = 1;
+					}else if(keyList.contains("S")){							//if down is also being pressed, then set this as well.
+						input.lmag = 1;
+						input.rmag = 0;
+					}else{
+						input.lmag = 0;
+						input.rmag = 0;
+					}
+					updateSpeeds();
+					break;
+				case NativeKeyEvent.VC_A:											// left (mid rotation)
+					if(keyList.contains("A") == false)keyList.add("A");	//if the key is already part of keyList, don't add it again.
+					input.midmag = 1;
+					input.mag = 1;
+					input.dir = 270;
+					updateSpeeds();
+					break;
+				case NativeKeyEvent.VC_E:											// right (mid rotation)
+					if(keyList.contains("E") == false)keyList.add("E");	//if the key is already part of keyList, don't add it again.
+					input.midmag = 1;
+					input.mag = 1;
+					input.dir = 90;
+					updateSpeeds();
+					break;
+				}	
+
+			}
+
+			//listens for keys being released.
+			public void nativeKeyReleased(NativeKeyEvent e) {
+				switch(e.getKeyCode()){												
+				case NativeKeyEvent.VC_Z:									// up
+					keyList.remove(getIndexByname("Z"));						//if key is released, remove it from keylist (uses helper function)
+					if(keyList.contains("Z") == false && keyList.contains("S") == false){	//if no up/down keys are pressed, reset all values.
 						input.mag = 0;
 						input.dir = 0;
+						input.lmag = 0;
+						input.rmag = 0;
 						updateSpeeds();
-						break;	
-					}				
-				}
+					}else if(keyList.contains("S") == true){					//if down key is pressed when up is released, go backwards.
+						input.mag = 0;
+						input.dir = 0;
+						input.rmag = 0;
+						input.lmag = 1;
+						updateSpeeds();
+					}
+					break;			
+				case NativeKeyEvent.VC_S:											// down 
+					keyList.remove(getIndexByname("S"));						//if key is released, remove it from keylist (uses helper function)
+					if(keyList.contains("Z") == false && keyList.contains("S") == false){	//if no up/down keys are pressed, reset all values.
+						input.mag = 0;
+						input.dir = 0;
+						input.lmag = 0;
+						input.rmag = 0;
+						updateSpeeds();
+					}else if(keyList.contains("Z") == true){					//if up key is pressed when down is released, go forwards.
+						input.mag = 0;
+						input.dir = 0;
+						input.rmag = 1;
+						input.lmag = 0;
+						updateSpeeds();
+					}
+					break;	
+				case NativeKeyEvent.VC_Q:											// left 
+					keyList.remove(getIndexByname("Q"));						//if key is released, remove it from keylist (uses helper function)
+					if(keyList.contains("Z") == false && keyList.contains("S") == false){	//if no up/down keys are pressed, reset all values.
+						input.mag = 0;
+						input.dir = 0;
+						input.lmag = 0;
+						input.rmag = 0;
+						updateSpeeds();
+					}else if(keyList.contains("Z") == true){					//if up key is still pressed and left released, go forward.
+						input.mag = 0;
+						input.dir = 0;
+						input.rmag = 1;
+						input.lmag = 0;
+						updateSpeeds();
+					}else{														//if down key is still pressed and left released, go backward.
+						input.mag = 0;
+						input.dir = 0;
+						input.rmag = 0;
+						input.lmag = 1;
+						updateSpeeds();
+					}
+					break;	
+				case NativeKeyEvent.VC_D:											// right
+					keyList.remove(getIndexByname("D"));					//if key is released, remove it from keylist (uses helper function)
+					if(keyList.contains("Z") == false && keyList.contains("S") == false){	//if no up/down keys are pressed, reset all values.
+						input.mag = 0;
+						input.dir = 0;
+						input.lmag = 0;
+						input.rmag = 0;
+						updateSpeeds();
+					}else if(keyList.contains("Z") == true){					//if up key is still pressed and left released, go forward.
+						input.mag = 0;
+						input.dir = 0;
+						input.rmag = 1;
+						input.lmag = 0;
+						updateSpeeds();
+					}else{														//if down key is still pressed and left released, go backward.
+						input.mag = 0;
+						input.dir = 0;
+						input.rmag = 0;
+						input.lmag = 1;
+						updateSpeeds();
+					}
+					break;
+				case NativeKeyEvent.VC_A:											// left (mid rotation)
+					keyList.remove(getIndexByname("A"));					//if key is released, remove it from keylist (uses helper function)
+					input.midmag = 0;
+					input.mag = 0;
+					input.dir = 0;
+					updateSpeeds();
+					break;
+				case NativeKeyEvent.VC_E:											// right (mid rotation)
+					keyList.remove(getIndexByname("E"));					//if key is released, remove it from keylist (uses helper function)
+					input.midmag = 0;
+					input.mag = 0;
+					input.dir = 0;
+					updateSpeeds();
+					break;	
+				}				
+			}
 
-				//listens for keys being typed (unused)
-				public void nativeKeyTyped(NativeKeyEvent e) {
-				}
-				
-			});
-			 
-		}
-			
-			
-	
+			//listens for keys being typed (unused)
+			public void nativeKeyTyped(NativeKeyEvent e) {
+			}
+
+		});
+
+	}
+
+
+
 
 	//Updates the left & right wheel power based on the input
 	public void updateSpeeds(){		
@@ -730,9 +767,9 @@ public class InputController {
 				wheelSpeeds.rwheel = Math.round((input.rmag - input.lmag) * 100.0) / 100.0;
 			}
 			if(wheelSpeeds.oldLwheel != wheelSpeeds.lwheel || wheelSpeeds.oldRwheel != wheelSpeeds.rwheel){
-				UDP udp = new UDP(wheelSpeeds,address);
+				UDP udp = new UDP(wheelSpeeds,address,connections);
 				try {
-					udp.UDPSend();
+					connections = udp.UDPSend();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -756,9 +793,9 @@ public class InputController {
 				wheelSpeeds.rwheel = -Math.round((input.lmag - input.rmag) * 100.0) / 100.0;
 			}
 			if(wheelSpeeds.oldLwheel != wheelSpeeds.lwheel || wheelSpeeds.oldRwheel != wheelSpeeds.rwheel){
-				UDP udp = new UDP(wheelSpeeds,address);
+				UDP udp = new UDP(wheelSpeeds,address,connections);
 				try {
-					udp.UDPSend();
+					connections = udp.UDPSend();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -778,9 +815,9 @@ public class InputController {
 				wheelSpeeds.lwheel = -0.5;
 			}	
 			if(wheelSpeeds.oldLwheel != wheelSpeeds.lwheel || wheelSpeeds.oldRwheel != wheelSpeeds.rwheel){
-				UDP udp = new UDP(wheelSpeeds,address);
+				UDP udp = new UDP(wheelSpeeds,address,connections);
 				try {
-					udp.UDPSend();
+					connections = udp.UDPSend();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -793,9 +830,9 @@ public class InputController {
 			wheelSpeeds.lwheel = 0;
 			wheelSpeeds.rwheel = 0;
 			if(wheelSpeeds.oldLwheel != wheelSpeeds.lwheel || wheelSpeeds.oldRwheel != wheelSpeeds.rwheel){
-				UDP udp = new UDP(wheelSpeeds,address);
+				UDP udp = new UDP(wheelSpeeds,address,connections);
 				try {
-					udp.UDPSend();
+					connections = udp.UDPSend();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -815,13 +852,15 @@ public class InputController {
 		}
 		String keyListString = builder.toString();
 		//set the GUI labels correctly
-		gui.keyListLabel.setText("Pressed Keys: " + keyListString + "\n");
-		gui.lwheelLabel.setText("Left Wheel Power: " + wheelSpeeds.lwheel + "\n");
-		gui.rwheelLabel.setText("Right Wheel Power: " + wheelSpeeds.rwheel + "\n");
+		if(isWindows()){
+			gui.keyListLabel.setText("Pressed Keys: " + keyListString + "\n");
+			gui.lwheelLabel.setText("Left Wheel Power: " + wheelSpeeds.lwheel + "\n");
+			gui.rwheelLabel.setText("Right Wheel Power: " + wheelSpeeds.rwheel + "\n");
+		}
 	}
 
 	public static void main(String[] args) throws InterruptedException{
-			new InputController(); 
+		new InputController(); 
 	}
 }
 

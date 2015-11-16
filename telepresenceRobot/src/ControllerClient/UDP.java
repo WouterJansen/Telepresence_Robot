@@ -8,16 +8,17 @@ import java.net.InetAddress;
 public class UDP {
 
 	public WheelSpeeds wheelSpeeds;
-	public int direction = 0,connections = 0;
+	public int connections;
 	public String address = "localhost";
 	
-	public UDP(WheelSpeeds wheelSpeeds, String address){
+	public UDP(WheelSpeeds wheelSpeeds, String address,int connections){
 		this.wheelSpeeds = wheelSpeeds;
 		this.address = address;
+		this.connections = connections;
 	}
 	
 	//sends the wheel speeds to the Raspberry Pi over UDP
-	public void UDPSend() throws IOException{
+	public int UDPSend() throws IOException{
 		//Both wheel-speeds combined in 1 String separated by a ","
 		String speeds = wheelSpeeds.lwheel + "," + wheelSpeeds.rwheel;
 		//Socket gets initialized
@@ -33,5 +34,6 @@ public class UDP {
       	connections = connections + 1;
         //closing UDP Socket
         clientSocket.close();
+        return connections;
 	}
 }
