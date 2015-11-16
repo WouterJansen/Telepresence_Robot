@@ -22,10 +22,28 @@ public class RobotController {
         
         public RobotController() throws IOException{
         		//starting video stream
-        		System.out.println("Starting videostream...");
- //       		Runtime.getRuntime().exec("#!/bin/bash");
-        		Runtime.getRuntime().exec("clear");
-        		Runtime.getRuntime().exec("raspivid -n -t 0 -rot 270 -w 960 -h 720 -fps 30 -b 6000000 -o - | gst-launch-1.0 -e -vvvv fdsrc ! h264parse ! rtph264pay pt=96 config-interval=5 ! udpsink host=192.168.1.36 port=9600");
+        		System.out.println("Starting Stream...");
+
+            	String command = "./start_stream.sh";
+
+            	StringBuffer output = new StringBuffer();
+
+            	Process p;
+            	try {
+                    p = Runtime.getRuntime().exec(command);
+                    p.waitFor();
+                    BufferedReader reader =
+                        new BufferedReader(new InputStreamReader(p.getInputStream()));
+
+                    String line = "";
+                    while ((line = reader.readLine())!= null) {
+                            output.append(line + "\n");
+                    }
+
+            	} catch (Exception e) {
+            		e.printStackTrace();
+            	}
+
                 System.out.println("Starting serial communication...");
                 // create an instance of the serial communications class
                 try {
