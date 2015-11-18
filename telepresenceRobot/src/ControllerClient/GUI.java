@@ -17,14 +17,12 @@ public class GUI {
 	
 	public JFrame frame;
 	public Box box = Box.createVerticalBox();
-	public JLabel magLabel,dirLabel,lmagLabel,rmagLabel,rshoulderLabel,lshoulderLabel,lwheelLabel,rwheelLabel,keyListLabel,xboxTitle,keyboardTitle,oculusTitle,outputTitle,oculusEnableTitle,oculusPosLabel,oculusRotLabel;
+	public JLabel jmagLabel,tmagLabel,rshoulderLabel,lshoulderLabel,lwheelLabel,rwheelLabel,keyListLabel,xboxTitle,keyboardTitle,oculusTitle,outputTitle,oculusEnableTitle,oculusPosLabel,oculusRotLabel;
 	
 	public GUI(){
 		frame = new JFrame("Telepresence Robot");
-        magLabel = new JLabel("Left Analog Magnitude:0.0\n");
-        dirLabel = new JLabel("Left Analog Direction:0.0\n");
-        lmagLabel = new JLabel("Left Trigger Magnitude:0.0\n");
-        rmagLabel = new JLabel("Right Trigger Magnitude:0.0\n");
+        jmagLabel = new JLabel("Analog Joystick:0.0\n");
+        tmagLabel = new JLabel("Trigger:0.0\n");
         lshoulderLabel = new JLabel("Left Shoulder Pressed: 0\n");
         rshoulderLabel = new JLabel("Right Shoulder Pressed: 0\n");
         keyListLabel = new JLabel("Pressed Keys: None\n");
@@ -42,10 +40,8 @@ public class GUI {
         oculusTitle.setFont(oculusTitle.getFont().deriveFont(oculusTitle.getFont().getStyle() | Font.ITALIC));
         outputTitle.setFont(outputTitle.getFont().deriveFont(outputTitle.getFont().getStyle() | Font.ITALIC));
         box.add(xboxTitle);
-        box.add(magLabel);
-        box.add(dirLabel);
-        box.add(lmagLabel);
-        box.add(rmagLabel);
+        box.add(jmagLabel);
+        box.add(tmagLabel);
         box.add(lshoulderLabel);
         box.add(rshoulderLabel);
         box.add(new JLabel(" "));
