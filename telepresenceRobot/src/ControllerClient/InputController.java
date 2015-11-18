@@ -73,23 +73,23 @@ public class InputController {
 		Controller[] ca = ControllerEnvironment.getDefaultEnvironment().getControllers();
 
 		//search for gamepad(xbox) controllers.
-        for(int i = 0;i<ca.length;i++){
-        	if(ca[i].getType().toString().equals("Gamepad")){
-        		xController = ca[i];
-        		break;
-        	}
-        }	       
-        //Get this controllers components (buttons and axis) and print them. FOR TESTING
-        Component[] components = xController.getComponents();
-        for(int j=0;j<components.length;j++){
-        	System.out.println("Component "+j+": "+components[j].getName());
-        }
-        //run the polling function to get changes in controller
-        while(true){
-        	poll(xController);        	
-        }
+		for(int i = 0;i<ca.length;i++){
+			if(ca[i].getType().toString().equals("Gamepad")){
+				xController = ca[i];
+				break;
+			}
+		}	       
+		//Get this controllers components (buttons and axis) and print them. FOR TESTING
+		Component[] components = xController.getComponents();
+		for(int j=0;j<components.length;j++){
+			System.out.println("Component "+j+": "+components[j].getName());
+		}
+		//run the polling function to get changes in controller
+		while(true){
+			poll(xController);        	
+		}
 	}
-	
+
 	//this function will continuesly listen for events in the controller
 	public void poll(Controller xController){
 		xController.poll();
@@ -109,7 +109,7 @@ public class InputController {
 			e.printStackTrace();
 		}
 	}
-	
+
 	//this function checks which component has changed and does the appropriate action for that component
 	public void ControllerComponentAction(Component comp, float value){
 		//Xbox Controller Back button
@@ -139,7 +139,7 @@ public class InputController {
 			if(isWindows()){
 				gui.tmagLabel.setText("Right Trigger Magnitude: " + input.tmag + "\n");
 			}
-			updateSpeedsL();
+			updateSpeeds();
 		}
 		//Xbox Controller Left Shoulder Button
 		else if(comp.toString().equals("Button 4")){
@@ -149,7 +149,7 @@ public class InputController {
 				if(isWindows()){
 					gui.lshoulderLabel.setText("Left Shoulder Pressed: " + 1 + "\n");
 				}
-				updateSpeedsL();
+				updateSpeeds();
 			}
 			else if(value==0f){
 				input.midmag = 0;
@@ -157,7 +157,7 @@ public class InputController {
 				if(isWindows()){
 					gui.lshoulderLabel.setText("Left Shoulder Pressed: " + 0 + "\n");
 				}
-				updateSpeedsL();
+				updateSpeeds();
 			}
 		}
 		//Xbox Controller Right Shoulder Button
@@ -168,7 +168,7 @@ public class InputController {
 				if(isWindows()){
 					gui.rshoulderLabel.setText("Right Shoulder Pressed: " + 1 + "\n");
 				}
-				updateSpeedsL();
+				updateSpeeds();
 			}
 
 			else if(value==0f){
@@ -177,7 +177,7 @@ public class InputController {
 				if(isWindows()){
 					gui.rshoulderLabel.setText("Right Shoulder Pressed: " + 0 + "\n");
 				}
-				updateSpeedsL();
+				updateSpeeds();
 			}
 		}
 		//Xbox Controller Right Analog Joystick
@@ -186,7 +186,7 @@ public class InputController {
 			if(isWindows()){
 				gui.jmagLabel.setText("Left Analog magnitude: " + input.jmag + "\n");
 			}
-			updateSpeedsL();
+			updateSpeeds();
 		}
 	}
 
@@ -247,7 +247,7 @@ public class InputController {
 		else{  // in all other cases the rotation is 0.
 			input.jmag = 0;
 		}    	
-		updateSpeedsL();    	
+		updateSpeeds();    	
 	}
 
 	//helper method to get index of certain searched object in arraylist
@@ -300,7 +300,7 @@ public class InputController {
 						input.jmag = 0;
 						input.tmag = 1;
 					}
-					updateSpeedsL();
+					updateSpeeds();
 					break;			
 				case KeyEvent.VK_S:											//down
 					if(keyList.contains("S") == false)keyList.add("S");		//if the key is already part of keyList, don't add it again.
@@ -316,7 +316,7 @@ public class InputController {
 						input.jmag = 0;
 						input.tmag = -1;
 					}
-					updateSpeedsL();
+					updateSpeeds();
 					break;
 				case KeyEvent.VK_Q:											//left 
 					if(keyList.contains("Q") == false)keyList.add("Q");		//if the key is already part of keyList, don't add it again.
@@ -328,7 +328,7 @@ public class InputController {
 					}else{
 						input.tmag = 0;
 					}
-					updateSpeedsL();
+					updateSpeeds();
 					break;
 				case KeyEvent.VK_D:											//right 
 					if(keyList.contains("D") == false)keyList.add("D");		//if the key is already part of keyList, don't add it again.
@@ -340,21 +340,22 @@ public class InputController {
 					}else{
 						input.tmag = 0;
 					}
-					updateSpeedsL();
+					updateSpeeds();
 					break;
 				case KeyEvent.VK_A:											//left (mid rotation)
 					if(keyList.contains("A") == false)keyList.add("A");		//if the key is already part of keyList, don't add it again.
 					input.midmag = 1;
 					input.jmag = -1;
-					updateSpeedsL();
+					updateSpeeds();
 					break;
 				case KeyEvent.VK_E:											//right (mid rotation)
 					if(keyList.contains("E") == false)keyList.add("E");		//if the key is already part of keyList, don't add it again.
 					input.midmag = 1;
 					input.jmag = 1;
-					updateSpeedsL();
+					updateSpeeds();
 					break;
-				}				
+				}		
+				SetGUIKeyList();
 			}
 
 			//listens for keys being released.
@@ -365,11 +366,11 @@ public class InputController {
 					if(keyList.contains("Z") == false && keyList.contains("S") == false){	//if no up/down keys are pressed, reset all values.
 						input.jmag = 0;
 						input.tmag = 0;
-						updateSpeedsL();
+						updateSpeeds();
 					}else if(keyList.contains("S") == true){								//if down key is pressed when up is released, go backwards.
 						input.jmag = 0;
 						input.tmag = -1;
-						updateSpeedsL();
+						updateSpeeds();
 					}
 					break;			
 				case KeyEvent.VK_S:															//down 
@@ -377,11 +378,11 @@ public class InputController {
 					if(keyList.contains("Z") == false && keyList.contains("S") == false){	//if no up/down keys are pressed, reset all values.
 						input.jmag = 0;
 						input.tmag = 0;
-						updateSpeedsL();
+						updateSpeeds();
 					}else if(keyList.contains("Z") == true){								//if up key is pressed when down is released, go forwards.
 						input.jmag = 0;
 						input.tmag = 1;
-						updateSpeedsL();
+						updateSpeeds();
 					}
 					break;	
 				case KeyEvent.VK_Q:															//left 
@@ -389,15 +390,15 @@ public class InputController {
 					if(keyList.contains("Z") == false && keyList.contains("S") == false){	//if no up/down keys are pressed, reset all values.
 						input.jmag = 0;
 						input.tmag = 0;
-						updateSpeedsL();
+						updateSpeeds();
 					}else if(keyList.contains("Z") == true){								//if up key is still pressed and left released, go forward.
 						input.jmag = 0;
 						input.tmag = 1;
-						updateSpeedsL();
+						updateSpeeds();
 					}else{																	//if down key is still pressed and left released, go backward.
 						input.jmag = 0;
 						input.tmag = -1;
-						updateSpeedsL();
+						updateSpeeds();
 					}
 					break;	
 				case KeyEvent.VK_D:															//right
@@ -405,30 +406,31 @@ public class InputController {
 					if(keyList.contains("Z") == false && keyList.contains("S") == false){	//if no up/down keys are pressed, reset all values.
 						input.jmag = 0;
 						input.tmag = 0;
-						updateSpeedsL();
+						updateSpeeds();
 					}else if(keyList.contains("Z") == true){								//if up key is still pressed and left released, go forward.
 						input.jmag = 0;
 						input.tmag = 1;
-						updateSpeedsL();
+						updateSpeeds();
 					}else{																	//if down key is still pressed and left released, go backward.
 						input.jmag = 0;
 						input.tmag = -1;
-						updateSpeedsL();
+						updateSpeeds();
 					}
 					break;
 				case KeyEvent.VK_A:											// left (mid rotation)
 					keyList.remove(getIndexByname("A"));					//if key is released, remove it from keylist (uses helper function)
 					input.midmag = 0;
 					input.jmag = 0;
-					updateSpeedsL();
+					updateSpeeds();
 					break;
 				case KeyEvent.VK_E:											// right (mid rotation)
 					keyList.remove(getIndexByname("E"));					//if key is released, remove it from keylist (uses helper function)
 					input.midmag = 0;
 					input.jmag = 0;
-					updateSpeedsL();
+					updateSpeeds();
 					break;	
-				}				
+				}		
+				SetGUIKeyList();
 			}
 
 			//listens for keys being typed (unused)
@@ -442,115 +444,95 @@ public class InputController {
 	public void LinKeyboardListener(){
 
 	}
-	
+
 	//Updates the left & right wheel power based on the input
-		public void updateSpeedsL(){		
-			// if total outcome is forwards
-			if(input.tmag > 0){
-				//right
-				if(input.jmag > 0){
-					wheelSpeeds.lwheel = Math.round((input.tmag) * 100.0) / 100.0;
-					wheelSpeeds.rwheel = Math.round(((input.tmag) - (input.tmag)*input.jmag) * 100.0) / 100.0;
-					//left
-				}else if (input.jmag < 0){
-					wheelSpeeds.lwheel = Math.round(((input.tmag) - (input.tmag)*-input.jmag) * 100.0) / 100.0;
-					wheelSpeeds.rwheel = Math.round((input.tmag) * 100.0) / 100.0; ;
-					//forwards
-				}else{
-					wheelSpeeds.lwheel = Math.round((input.tmag) * 100.0) / 100.0;
-					wheelSpeeds.rwheel = Math.round((input.tmag) * 100.0) / 100.0;
-				}
-				if(wheelSpeeds.oldLwheel != wheelSpeeds.lwheel || wheelSpeeds.oldRwheel != wheelSpeeds.rwheel){
-					UDP udp = new UDP(wheelSpeeds,address,connections);
-					try {
-						connections = udp.UDPSend();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-				wheelSpeeds.oldLwheel = wheelSpeeds.lwheel;
-				wheelSpeeds.oldRwheel = wheelSpeeds.rwheel;
-
-				// if total outcome is backwards
-			}else if(input.tmag < 0){					
-				//right
-				if(input.jmag > 0){
-					wheelSpeeds.lwheel = -Math.round((-input.tmag) * 100.0) / 100.0;
-					wheelSpeeds.rwheel = -Math.round(((-input.tmag) - (-input.tmag)*input.jmag) * 100.0) / 100.0;
-					//left
-				}else if (input.jmag < 0){
-					wheelSpeeds.lwheel = -Math.round(((-input.tmag) - (-input.tmag)*-input.jmag) * 100.0) / 100.0;
-					wheelSpeeds.rwheel = -Math.round((-input.tmag) * 100.0) / 100.0; ;
-					//backwards
-				}else{
-					wheelSpeeds.lwheel = -Math.round((-input.tmag) * 100.0) / 100.0;
-					wheelSpeeds.rwheel = -Math.round((-input.tmag) * 100.0) / 100.0;
-				}
-				if(wheelSpeeds.oldLwheel != wheelSpeeds.lwheel || wheelSpeeds.oldRwheel != wheelSpeeds.rwheel){
-					UDP udp = new UDP(wheelSpeeds,address,connections);
-					try {
-						connections = udp.UDPSend();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-				wheelSpeeds.oldLwheel = wheelSpeeds.lwheel;
-				wheelSpeeds.oldRwheel = wheelSpeeds.rwheel;
-
-				//rotating around midpoint
-			}else if(input.midmag == 1){
-				//Rotating on it's midpoint to the left
-				if(input.jmag > 0){
-					wheelSpeeds.rwheel = -0.5;
-					wheelSpeeds.lwheel = 0.5;
-					//Rotating on it's midpoint to the right
-				}else if (input.jmag < 0){
-					wheelSpeeds.rwheel = 0.5;
-					wheelSpeeds.lwheel = -0.5;
-				}	
-				if(wheelSpeeds.oldLwheel != wheelSpeeds.lwheel || wheelSpeeds.oldRwheel != wheelSpeeds.rwheel){
-					UDP udp = new UDP(wheelSpeeds,address,connections);
-					try {
-						connections = udp.UDPSend();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-				wheelSpeeds.oldLwheel = wheelSpeeds.lwheel;
-				wheelSpeeds.oldRwheel = wheelSpeeds.rwheel;
-
-				// no acceleration but still using analog
+	public void updateSpeeds(){
+		//not rotating around midpoint (normal driving)
+		if(input.midmag == 0){
+			//right
+			if(input.jmag > 0){
+				wheelSpeeds.lwheel = Math.round((input.tmag) * 100.0) / 100.0;
+				wheelSpeeds.rwheel = Math.round(((input.tmag) - (input.tmag)*input.jmag) * 100.0) / 100.0;
+				//left
+			}else if (input.jmag < 0){
+				wheelSpeeds.lwheel = Math.round(((input.tmag) - (input.tmag)*-input.jmag) * 100.0) / 100.0;
+				wheelSpeeds.rwheel = Math.round((input.tmag) * 100.0) / 100.0; ;
+				//forwards//backwards
 			}else{
-				wheelSpeeds.lwheel = 0;
-				wheelSpeeds.rwheel = 0;
-				if(wheelSpeeds.oldLwheel != wheelSpeeds.lwheel || wheelSpeeds.oldRwheel != wheelSpeeds.rwheel){
-					UDP udp = new UDP(wheelSpeeds,address,connections);
-					try {
-						connections = udp.UDPSend();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+				wheelSpeeds.lwheel = Math.round((input.tmag) * 100.0) / 100.0;
+				wheelSpeeds.rwheel = Math.round((input.tmag) * 100.0) / 100.0;
+			}
+			if(wheelSpeeds.oldLwheel != wheelSpeeds.lwheel || wheelSpeeds.oldRwheel != wheelSpeeds.rwheel){
+				UDP udp = new UDP(wheelSpeeds,address,connections);
+				try {
+					connections = udp.UDPSend();
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-				wheelSpeeds.oldLwheel = wheelSpeeds.lwheel;
-				wheelSpeeds.oldRwheel = wheelSpeeds.rwheel;
 			}
+			wheelSpeeds.oldLwheel = wheelSpeeds.lwheel;
+			wheelSpeeds.oldRwheel = wheelSpeeds.rwheel;
 
-			//builds a string off pressed keys in the keyList array
-			StringBuilder builder = new StringBuilder();
-
-			for (String string : keyList) {
-				if (builder.length() > 0) {
-					builder.append(" ");
+			//rotating around midpoint
+		}else if(input.midmag == 1){
+			//Rotating on it's midpoint to the left
+			if(input.jmag > 0){
+				wheelSpeeds.rwheel = -0.5;
+				wheelSpeeds.lwheel = 0.5;
+				//Rotating on it's midpoint to the right
+			}else if (input.jmag < 0){
+				wheelSpeeds.rwheel = 0.5;
+				wheelSpeeds.lwheel = -0.5;
+			}	
+			if(wheelSpeeds.oldLwheel != wheelSpeeds.lwheel || wheelSpeeds.oldRwheel != wheelSpeeds.rwheel){
+				UDP udp = new UDP(wheelSpeeds,address,connections);
+				try {
+					connections = udp.UDPSend();
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-				builder.append(string);
 			}
-			String keyListString = builder.toString();
-			//set the GUI labels correctly
-			if(isWindows()){
-				gui.keyListLabel.setText("Pressed Keys: " + keyListString + "\n");
-				gui.lwheelLabel.setText("Left Wheel Power: " + wheelSpeeds.lwheel + "\n");
-				gui.rwheelLabel.setText("Right Wheel Power: " + wheelSpeeds.rwheel + "\n");
+			wheelSpeeds.oldLwheel = wheelSpeeds.lwheel;
+			wheelSpeeds.oldRwheel = wheelSpeeds.rwheel;
+
+			// no acceleration but still using analog
+		}else{
+			wheelSpeeds.lwheel = 0;
+			wheelSpeeds.rwheel = 0;
+			if(wheelSpeeds.oldLwheel != wheelSpeeds.lwheel || wheelSpeeds.oldRwheel != wheelSpeeds.rwheel){
+				UDP udp = new UDP(wheelSpeeds,address,connections);
+				try {
+					connections = udp.UDPSend();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
+			wheelSpeeds.oldLwheel = wheelSpeeds.lwheel;
+			wheelSpeeds.oldRwheel = wheelSpeeds.rwheel;
+			
+			
+		}
+	}
+	
+	//set the GUI keylist
+	public void SetGUIKeyList(){
+
+		//builds a string off pressed keys in the keyList array
+		StringBuilder builder = new StringBuilder();
+
+		for (String string : keyList) {
+			if (builder.length() > 0) {
+				builder.append(" ");
+			}
+			builder.append(string);
+		}
+		String keyListString = builder.toString();
+		//set the GUI labels correctly
+		if(isWindows()){
+			gui.keyListLabel.setText("Pressed Keys: " + keyListString + "\n");
+			gui.lwheelLabel.setText("Left Wheel Power: " + wheelSpeeds.lwheel + "\n");
+			gui.rwheelLabel.setText("Right Wheel Power: " + wheelSpeeds.rwheel + "\n");
+		}	
 	}
 
 	public static void main(String[] args) throws InterruptedException{
