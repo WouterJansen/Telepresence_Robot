@@ -355,7 +355,6 @@ public class InputController {
 					updateSpeeds();
 					break;
 				}		
-				SetGUIKeyList();
 			}
 
 			//listens for keys being released.
@@ -430,7 +429,6 @@ public class InputController {
 					updateSpeeds();
 					break;	
 				}		
-				SetGUIKeyList();
 			}
 
 			//listens for keys being typed (unused)
@@ -512,6 +510,7 @@ public class InputController {
 			
 			
 		}
+		SetGUIKeyList();
 	}
 	
 	//set the GUI keylist
