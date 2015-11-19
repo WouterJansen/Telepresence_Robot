@@ -69,8 +69,19 @@ public class InputController {
 
 	//Listener for input of Xbox controller
 	public void XboxContListener(){
-		Controller xController = null;
 		Controller[] ca = ControllerEnvironment.getDefaultEnvironment().getControllers();
+		
+//		//for testing print all devices and components
+//		for(int i = 0;i<ca.length;i++){
+//			System.out.println("device "+i+": "+ca[i].getName());
+//			//Get this controllers components (buttons and axis) and print them. FOR TESTING
+//			Component[] components = ca[i].getComponents();
+//			for(int j=0;j<components.length;j++){
+//				System.out.println("    Component "+j+": "+components[j].getName());
+//			}			
+//		}	   		
+		
+		Controller xController = null;
 
 		//search for gamepad(xbox) controllers.
 		for(int i = 0;i<ca.length;i++){
@@ -79,11 +90,7 @@ public class InputController {
 				break;
 			}
 		}	       
-		//Get this controllers components (buttons and axis) and print them. FOR TESTING
-		Component[] components = xController.getComponents();
-		for(int j=0;j<components.length;j++){
-			System.out.println("Component "+j+": "+components[j].getName());
-		}
+
 		//run the polling function to get changes in controller
 		while(true){
 			poll(xController);        	
