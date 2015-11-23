@@ -20,27 +20,34 @@ public class RobotController {
         static int count = 0;
         final Serial serial = SerialFactory.createInstance();
         
+        
+        //setup function
         public RobotController() throws IOException{
+        		System.out.println("Telepresence Controller - University of Antwerp");
+        		System.out.println("\n Loading modules...\n");
         		//starting video stream
-        		System.out.println("Starting Stream...");
+        		System.out.println("\nStarting VideoStream...");
 
         		new StartStream().start();
-
-                System.out.println("Starting serial communication...");
+        		System.out.println("VideoStream started!");
+                System.out.println("\nStarting Serial Communication...");
                 // create an instance of the serial communications class
                 try {
                 	// open the default serial port provided on the GPIO header, default rpi baud rate.
                 	serial.open(Serial.DEFAULT_COM_PORT, 115200);
-                	System.out.println("Serial communication success!");
+                	System.out.println("Serial Communication success!");
+                	System.out.println("\n--------------------------------------------------------");
                
                 }catch(SerialPortException ex) {
-                	System.out.println("Serial communication failed:" + ex.getMessage());
+                	System.out.println("Serial Communication failed:" + ex.getMessage());
+                	System.out.println("\n--------------------------------------------------------");
                 	return;
                 }
                 OutToPins();
                 UDPReceive();
         }
        
+        //method to receive the UDP packet from the InputController
         public void UDPReceive() throws IOException{
                 serverSocket = new DatagramSocket(9876);
                 //Create array to story received data
@@ -54,67 +61,31 @@ public class RobotController {
                         //Store data in string
                         String clientSentence = new String(receivePacket.getData(),0,receivePacket.getLength());
                         //print the received data
-                        System.out.println("Received " + count + ": " + clientSentence);
+                        System.out.println("Received data #" + count + ": " + clientSentence);
                         //send data over Uart.
                         UartSend(clientSentence);
                         count = count + 1;
                 }       
         }
         
+        //Send the byte over UART via the serial communication.
         public void UartSend(String clientByte){
         	try {
             	//send the data but first needs to be converted to right format.
             	serial.write((byte) WheelSpeedConverter.Conversion(clientByte));
+            	System.out.println("Send byte #" + count + ": " + clientByte);
             }catch(IllegalStateException ex){
             	ex.printStackTrace();                    
             } 
         }
        
+        //method to set a pin to LOW/HIGH.
         public void OutToPins(){
                 //create gpio controller
                 final GpioController gpio = GpioFactory.getInstance();
-                //Pin 8 to set UART-RTS 0 => receive mode
+                //Pin to set UART-RTS 0 => receive mode. This is GPIO_17 but the library knows it as GPIO_11. It is set to HIGH.
                 gpio.provisionDigitalOutputPin(RaspiPin.GPIO_00,"UART0-RTS",PinState.HIGH);         
-        }
-       
-       
-        public double RPMLimiter(double wheel, double wheelOld){
-                double speed = 0;
-                double maximumAcc = 0.25;
-                double maximumDec = 0.10;
-       
-               
-                if(wheel > 0 && wheelOld > 0){                          //positieve waarden
-                        if(wheel - wheelOld > 0){
-                                if(wheel - wheelOld >= maximumAcc){
-                                        speed = maximumAcc;                                    
-                                }else{speed = wheel;}
-                        }else if(wheel - wheelOld < 0){
-                                if(-(wheel - wheelOld) >= maximumDec){
-                                        speed = maximumDec;                                    
-                                }else{speed = wheel;}
-                        }else if(wheel == wheelOld){
-                                speed = wheel;
-                        }
-                }else if(wheel < 0 && wheelOld < 0){            //negatieve waarden
-                        if(wheel - wheelOld > 0){
-                                if(wheel - wheelOld >= maximumAcc){
-                                        speed = maximumAcc;                                    
-                                }else{speed = wheel;}
-                        }else if(wheel - wheelOld < 0){
-                                if(-(wheel - wheelOld) >= maximumDec){
-                                        speed = maximumDec;                                    
-                                }else{speed = wheel;}
-                        }else if(wheel == wheelOld){
-                                speed = wheel;
-                        }
-                }else if((wheel > 0 && wheelOld < 0) || (wheel < 0 && wheelOld > 0)){
-                       
-                }
-               
-               
-                return speed;
-        }
+        }       
        
    public static void main(String argv[]) throws Exception
       {

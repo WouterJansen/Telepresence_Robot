@@ -2,8 +2,8 @@ package RaspBerryPiClient;
 
 import java.util.Arrays;
 
-//class to convert a set of wheel speeds in a string containing wheel direction and speed in value between 0 and 255
-// to make it easier for the Atmel Microprocessor to read it in. This string can then be send over Serial UART. 
+//class to convert a set of wheel speeds in a byte containing wheel direction and speed in value between 0 and 9
+// to make it easier for the Atmel Microprocessor to read it in. This byte can then be send over Serial UART. 
 public class WheelSpeedConverter {
 
 	public WheelSpeedConverter(){
@@ -25,17 +25,20 @@ public class WheelSpeedConverter {
 		else if (rwheel < 0)wheelDirectionR = 0;
 
 
-		//Conversion of number between 0 and 1 to between 0 and 255
+		//Conversion of number between 0 and 1 to between 0 and 7 (for 3 bits)
 		int lwheelC = Math.round((Math.abs(lwheel)) * 7);
+		//convert that to a 3 bit value
 		String lbits = Arrays.toString(toBinary(lwheelC)).replace(",", "").replace("[", "").replace("]", "").replace(" ", "").trim();
 		int rwheelC = Math.round((Math.abs(rwheel)) * 7);
 		String rbits = Arrays.toString(toBinary(rwheelC)).replace(",", "").replace("[", "").replace("]", "").replace(" ", "").trim();
-		//combining into one string
-		String combined = wheelDirectionL + Integer.toString(wheelDirectionR) + lbits + rbits;	
+		//combining into one string with the wheeldirections
+		String combined = wheelDirectionL + Integer.toString(wheelDirectionR) + lbits + rbits;
+		//turn string into Byte
 		byte value = (byte) Integer.parseInt(combined, 2);
 		return value;
 	}
 
+	//help function to turn integer into binary value
 	public static int[] toBinary(int input){
 		int[] bits = new int[3];
 		for (int i = 2; i >= 0; i--) {
@@ -50,6 +53,7 @@ public class WheelSpeedConverter {
 		return bits;
 	}
 	
+	//help function to revert values in a integer array.
 	public static int[] reverse(int[] data) {
 	    for (int left = 0, right = data.length - 1; left < right; left++, right--) {
 	        // swap the values at the left and right indices
@@ -60,6 +64,7 @@ public class WheelSpeedConverter {
 	    return data;
 	}
 	
+	//for testing purposes only
 	public static void main(String argv[]){
 		//test string
 		String receivedString = "0.81,0.45";
