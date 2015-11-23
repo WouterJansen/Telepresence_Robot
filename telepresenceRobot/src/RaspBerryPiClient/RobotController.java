@@ -61,10 +61,10 @@ public class RobotController {
                 }       
         }
         
-        public void UartSend(String clientSentence){
+        public void UartSend(String clientByte){
         	try {
             	//send the data but first needs to be converted to right format.
-            	serial.write(WheelSpeedConverter.Conversion(clientSentence));
+            	serial.write(WheelSpeedConverter.Conversion(clientByte));
             }catch(IllegalStateException ex){
             	ex.printStackTrace();                    
             } 
