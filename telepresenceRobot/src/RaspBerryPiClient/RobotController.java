@@ -64,7 +64,7 @@ public class RobotController {
         public void UartSend(String clientByte){
         	try {
             	//send the data but first needs to be converted to right format.
-            	serial.write(WheelSpeedConverter.Conversion(clientByte));
+            	serial.write((byte) WheelSpeedConverter.Conversion(clientByte));
             }catch(IllegalStateException ex){
             	ex.printStackTrace();                    
             } 
@@ -74,7 +74,7 @@ public class RobotController {
                 //create gpio controller
                 final GpioController gpio = GpioFactory.getInstance();
                 //Pin 8 to set UART-RTS 0 => receive mode
-                gpio.provisionDigitalOutputPin(RaspiPin.GPIO_11,"UART0-RTS",PinState.LOW);         
+                gpio.provisionDigitalOutputPin(RaspiPin.GPIO_00,"UART0-RTS",PinState.HIGH);         
         }
        
        
