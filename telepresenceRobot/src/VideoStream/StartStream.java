@@ -1,8 +1,9 @@
-package RaspBerryPiClient;
+package VideoStream;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+// Class to start the videostream to the receiving client with the raspicam.
 public class StartStream extends Thread{
 
     public static void main(String[] args) {
