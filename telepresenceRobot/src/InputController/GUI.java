@@ -1,4 +1,4 @@
-package ControllerClient;
+package InputController;
 
 import java.awt.Dimension;
 import java.awt.Font;

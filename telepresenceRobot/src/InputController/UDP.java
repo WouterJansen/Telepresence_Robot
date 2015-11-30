@@ -1,4 +1,4 @@
-package ControllerClient;
+package InputController;
 
 import java.io.IOException;
 import java.net.DatagramPacket;

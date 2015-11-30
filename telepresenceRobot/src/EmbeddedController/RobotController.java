@@ -1,4 +1,4 @@
-package RaspBerryPiClient;
+package EmbeddedController;
 import java.io.*;
 import java.net.*;
 import com.pi4j.io.gpio.GpioController;

@@ -1,4 +1,4 @@
-package ControllerClient;
+package InputController;
 
 import net.java.games.input.Component;
 import net.java.games.input.Controller;

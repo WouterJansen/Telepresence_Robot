@@ -1,4 +1,4 @@
-package ControllerClient;
+package InputController;
 
 public class Input {
 

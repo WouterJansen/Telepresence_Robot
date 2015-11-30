@@ -1,4 +1,4 @@
-package RaspBerryPiClient;
+package EmbeddedController;
 
 import java.util.Arrays;
 
