@@ -63,7 +63,7 @@ public class EmbeddedController {
                         //Store data in string
                         String clientSentence = new String(receivePacket.getData(),0,receivePacket.getLength());
                         //print the received data
-                        System.out.println("Received data #" + count + ": " + clientSentence);
+                        System.out.println("Received wheelspeeds to send #" + count + ": " + clientSentence);
                         //send data over Uart.
                         UartSend(clientSentence);
                         count = count + 1;
@@ -75,7 +75,7 @@ public class EmbeddedController {
         	try {
             	//send the data but first needs to be converted to right format.
             	serial.write((byte) WheelSpeedConverter.Conversion(clientByte));
-            	System.out.println("Send byte #" + count + ": " + clientByte);
+            	System.out.println("Send wheelspeeds #!");
             }catch(IllegalStateException ex){
             	ex.printStackTrace();                    
             } 
