@@ -12,7 +12,7 @@ import com.pi4j.io.serial.SerialPortException;
 import VideoStream.StartStream;
  
  
-public class RobotController {
+public class EmbeddedController {
        
         static double lwheelOld = 0;
         static double rwheelOld = 0;
@@ -24,7 +24,7 @@ public class RobotController {
         
         
         //setup function
-        public RobotController() throws IOException{
+        public EmbeddedController() throws IOException{
         		System.out.println("Telepresence Controller - University of Antwerp");
         		System.out.println("\n Loading modules...\n");
         		//starting video stream
@@ -91,6 +91,6 @@ public class RobotController {
        
    public static void main(String argv[]) throws Exception
       {
-         new RobotController();
+         new EmbeddedController();
       }
 }
