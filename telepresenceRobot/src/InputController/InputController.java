@@ -111,7 +111,7 @@ public class InputController {
 
 	//this function checks which component has changed and does the appropriate action for that component
 	public void DevicePollAction(Component comp, float value){
-		
+
 		//Xbox Controller Back button : oculus recenter.
 		if(comp.toString().equals("Button 6")){
 			if(value==1.0f){
@@ -372,7 +372,7 @@ public class InputController {
 			}
 		}
 	}
-	
+
 	//helper method to get index of certain searched object in arraylist (for keyboard list)
 	public int getIndexByname(String pName)
 	{
@@ -402,16 +402,16 @@ public class InputController {
 			oculus.recenterPose();
 			//get position information and update GUI
 			while(true){
+				TrackingState trackingState = oculus.getTrackingState(0);
+				OvrVector3f position = trackingState.HeadPose.Pose.Position;
+				OvrQuaternionf rotation = trackingState.HeadPose.Pose.Orientation;
+				position.x *= 100.0f;
+				position.y *= 100.0f;
+				position.z *= 100.0f;
+				rotation.x *= 100.0f;
+				rotation.y *= 100.0f;
+				rotation.z *= 100.0f;				
 				if(oculusEnable == true){
-					TrackingState trackingState = oculus.getTrackingState(0);
-					OvrVector3f position = trackingState.HeadPose.Pose.Position;
-					OvrQuaternionf rotation = trackingState.HeadPose.Pose.Orientation;
-					position.x *= 100.0f;
-					position.y *= 100.0f;
-					position.z *= 100.0f;
-					rotation.x *= 100.0f;
-					rotation.y *= 100.0f;
-					rotation.z *= 100.0f;
 					if(isWindows()){
 						gui.oculusPosLabel.setText("Oculus Position Output: " + (int)position.x + ", " + (int)position.y + " " + (int)position.z + "\n");
 						gui.oculusRotLabel.setText("Oculus Rotation Output: " + (int)rotation.x + ", " + (int)rotation.y + " " + (int)rotation.z + "\n");

@@ -75,7 +75,7 @@ public class EmbeddedController {
         	try {
             	//send the data but first needs to be converted to right format.
             	serial.write((byte) WheelSpeedConverter.Conversion(clientByte));
-            	System.out.println("Send wheelspeeds #!");
+            	System.out.println("Send wheelspeeds #!" + count);
             }catch(IllegalStateException ex){
             	ex.printStackTrace();                    
             } 
@@ -86,7 +86,9 @@ public class EmbeddedController {
                 //create gpio controller
                 final GpioController gpio = GpioFactory.getInstance();
                 //Pin to set UART-RTS 0 => receive mode. This is GPIO_17 but the library knows it as GPIO_11. It is set to HIGH.
-                gpio.provisionDigitalOutputPin(RaspiPin.GPIO_00,"UART0-RTS",PinState.HIGH);         
+                gpio.provisionDigitalOutputPin(RaspiPin.GPIO_00,"UART0-RTS",PinState.HIGH);     
+                //Pin to set HIGH for the status LED
+                gpio.provisionDigitalOutputPin(RaspiPin.GPIO_01,"LED",PinState.HIGH);  
         }       
        
    public static void main(String argv[]) throws Exception
