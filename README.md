@@ -8,9 +8,10 @@ This project has a few modules:
 * **The Motor Controller**: In this case a Atmel Microprocessor will receive the wheelspeed data from the serial communication with the RS-485 and use it to control the wheel-motors of the wheelchair through I2C. 
 * **Video Stream**: The embedded controller, in this case a raspberry Pi has 2 camera's attached to it. This video stream can be send to the input controller to be viewed on a monitor or through the Oculus Rift.
 
-![Architecure](http://i.imgur.com/b3Jo9ef.png)
+![Architecure](http://i.imgur.com/99GRG1m.png)
+
 # What can be found in this Git?
-This git has the source code for the The Input & Embedded Controller. Also contains the Java code to start the Video Stream on the Embedded Controller.
+This git has the source code for the Input & Embedded Controller. Also contains the Java code to start the Video Stream on the Embedded Controller. This is all contained in one Java Project suitable for Eclipse.
 
 # Requirements
 * Oculus Runtime 0.7 or higher
