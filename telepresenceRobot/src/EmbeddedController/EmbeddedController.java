@@ -21,6 +21,8 @@ public class EmbeddedController {
         private DatagramSocket serverSocket;
         static int count = 0;
         final Serial serial = SerialFactory.createInstance();
+        public long starttime  = 0;
+        public long stoptime = 0;
         
         
         //setup function
@@ -60,6 +62,7 @@ public class EmbeddedController {
                         DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
                         //receive datapacket
                         serverSocket.receive(receivePacket);
+                        starttime = System.nanoTime();
                         //Store data in string
                         String clientSentence = new String(receivePacket.getData(),0,receivePacket.getLength());
                         //print the received data
@@ -75,7 +78,8 @@ public class EmbeddedController {
         	try {
             	//send the data but first needs to be converted to right format.
             	serial.write((byte) WheelSpeedConverter.Conversion(clientByte));
-            	System.out.println("Send wheelspeeds #!" + count);
+            	stoptime = System.nanoTime();
+            	System.out.println("Send wheelspeeds #" + count + "!Byte send: " + WheelSpeedConverter.Conversion(clientByte) + ".Process time: " + (stoptime - starttime) + "ns");
             }catch(IllegalStateException ex){
             	ex.printStackTrace();                    
             } 

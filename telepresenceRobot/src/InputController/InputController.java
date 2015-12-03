@@ -30,6 +30,8 @@ public class InputController {
 	//list that keeps all current pressed keyboard buttons
 	static ArrayList<String> keyList = new ArrayList<String>();
 	public static String OS = null;
+	public long starttime  = 0;
+	public long stoptime = 0;
 
 	//Constructor
 	public InputController() throws InterruptedException{
@@ -52,6 +54,8 @@ public class InputController {
 			};
 			t.start();
 		}else{
+			System.out.println("Jinput for Java Loading...Detecting Devices...");
+			System.out.println("--------------------------------------------------------");
 			DeviceListener();
 		}
 	}    
@@ -76,16 +80,20 @@ public class InputController {
 		//search for devices and create listeners for them.
 		for(int j = 0;j<ca.length;j++){
 			final Controller device = ca[j];
-			System.out.println("Device #"+j+", name: "+ca[j].getName() + ", type: " + ca[j].getType()+ " added.");
-			//run a new polling thread to listen for changes in components for each device.
-			Thread t = new Thread() {
-				public void run() {
-					while(true){
-						poll(device);
+			System.out.println("Device #"+j+", name: "+ca[j].getName() + ", type: " + ca[j].getType()+ ", added.");
+			Component[] components = ca[j].getComponents();
+			for(int k = 0;k<components.length;k++){
+				System.out.println("component #" + k + ": " + components[k].getName());
+				//run a new polling thread to listen for changes in components for each device.
+				Thread t = new Thread() {
+					public void run() {
+						while(true){
+							poll(device);
+						}
 					}
-				}
-			};
-			t.start();
+				};
+				t.start();
+			}
 		}
 	}
 
@@ -97,8 +105,12 @@ public class InputController {
 		while(queue.getNextEvent(event)) {			
 			//get information about which compontent changes and it's value.
 			Component comp = event.getComponent();
-			float value = event.getValue(); 
-			DevicePollAction(comp,value);
+			float value = event.getValue();
+			if(isWindows()){
+				PollActionWindows(comp,value);
+			}else{
+				PollActionLinux(comp,value);
+			}
 		}
 		//delay between events
 		try {
@@ -109,9 +121,9 @@ public class InputController {
 		}
 	}
 
-	//this function checks which component has changed and does the appropriate action for that component
-	public void DevicePollAction(Component comp, float value){
-
+	//this function checks which component has changed and does the appropriate action for that component in Windows
+	public void PollActionWindows(Component comp, float value){
+		starttime = System.nanoTime();
 		//Xbox Controller Back button : oculus recenter.
 		if(comp.toString().equals("Button 6")){
 			if(value==1.0f){
@@ -214,6 +226,8 @@ public class InputController {
 
 		//Keyboard A : rotate on mid point to the left
 		else if(comp.toString().equals("A")){  
+			System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAA");
+
 			if(value==1.0f){
 				if(keyList.contains("A") == false)keyList.add("A");		//if the key is already part of keyList, don't add it again.
 				input.midmag = 1;
@@ -384,6 +398,48 @@ public class InputController {
 		return -1;
 	}
 
+	//this function checks which component has changed and does the appropriate action for that component in Linux
+	public void PollActionLinux(Component comp, float value){
+		starttime = System.nanoTime();
+		//Xbox Controller Triggers: forward/backwards speed.
+		if(comp.toString().equals("z")){
+			input.tmag = Math.round((value*-1) * 100.0) / 100.0;
+			updateSpeeds();
+		}
+		//Xbox Controller Left Shoulder Button: rotating around midpoint to the left.
+		else if(comp.toString().equals("Button 4")){
+			if(value==1.0f){
+				input.midmag = 1;
+				input.jmag = -1;
+				updateSpeeds();
+			}
+			else if(value==0f){
+				input.midmag = 0;
+				input.jmag = 0;
+				updateSpeeds();
+			}
+		}
+		//Xbox Controller Right Shoulder Button: rotating around midpoint to the right.
+		else if(comp.toString().equals("Button 5")){
+			if(value==1.0f){
+				input.midmag = 1;
+				input.jmag = 1;
+				updateSpeeds();
+			}
+
+			else if(value==0f){
+				input.midmag = 0;
+				input.jmag = 0;
+				updateSpeeds();
+			}
+		}
+		//Xbox Controller Right Analog Joystick: direction input
+		else if(comp.toString().equals("X Axis")){
+			input.jmag = Math.round(value * 100.0) / 100.0;
+			updateSpeeds();
+		}
+	}
+
 
 	//Listener for input of Oculus Positional Tracking
 	public void OculusListener() throws IllegalStateException{
@@ -466,6 +522,8 @@ public class InputController {
 				UDP udp = new UDP(wheelSpeeds,address,connections);
 				try {
 					connections = udp.UDPSend();
+					stoptime = System.nanoTime();
+					System.out.println("process time:" + (stoptime - starttime) + "ns");
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -488,6 +546,8 @@ public class InputController {
 				UDP udp = new UDP(wheelSpeeds,address,connections);
 				try {
 					connections = udp.UDPSend();
+					stoptime = System.nanoTime();
+					System.out.println("process time:" + (stoptime - starttime) + "ns");
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -503,6 +563,8 @@ public class InputController {
 				UDP udp = new UDP(wheelSpeeds,address,connections);
 				try {
 					connections = udp.UDPSend();
+					stoptime = System.nanoTime();
+					System.out.println("process time:" + (stoptime - starttime) + "ns");
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
