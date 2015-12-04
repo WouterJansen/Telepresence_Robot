@@ -426,6 +426,22 @@ public class InputController {
 		else if(comp.toString().equals("pov")){
 			System.out.println("pov " + value);
 		}
+		else if(comp.toString().equals("x")){
+			System.out.println("x " + value);
+		}
+		else if(comp.toString().equals("y")){
+			System.out.println("y " + value);
+		}
+		else if(comp.toString().equals("z")){
+			System.out.println("z " + value);
+		}
+		else if(comp.toString().equals("Mode")){
+			System.out.println("mode " + value);
+		}
+		else if(comp.toString().equals("Select")){
+			System.out.println("pov " + value);
+		}
+		
 		
 		
 	
