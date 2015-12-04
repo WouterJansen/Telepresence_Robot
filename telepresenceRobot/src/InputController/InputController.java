@@ -555,6 +555,25 @@ public class InputController {
 				wheelSpeeds.lwheel = Math.round((input.tmag) * 100.0) / 100.0;
 				wheelSpeeds.rwheel = Math.round((input.tmag) * 100.0) / 100.0;
 			}
+			
+			//ONLY FOR SHORTAGE OF TIME WE HAVE MADE ADDITIONAL CODE here TO DIGITIZE THE WHEELSPEEDS
+			//SO IT CAN ONLY BE 1 OR 0 AND NOT VALUES IN BETWEEN.
+			//THIS IS DONE TO SOLVE CONFLICTS ON THE MOTORCONTROL SIDE  
+			//WHICH CAN AT THE MOMENT NOT DEAL WITH MANY PACKETS. IF THIS PROBLEM IS SOLVED THE FOLLOWING
+			//LINES CAN BE REMOVED TO REINTRODUCE ANALOG INPUT			
+			if(wheelSpeeds.lwheel > 0){
+				wheelSpeeds.lwheel = 1;
+			}else if(wheelSpeeds.lwheel < 0){
+				wheelSpeeds.lwheel = -1;
+			}
+			
+			if(wheelSpeeds.rwheel > 0){
+				wheelSpeeds.rwheel = 1;
+			}else if(wheelSpeeds.rwheel < 0){
+				wheelSpeeds.rwheel = -1;
+			}
+			// UNTIL HERE IS THE TEMP. CODE
+		
 			if(wheelSpeeds.oldLwheel != wheelSpeeds.lwheel || wheelSpeeds.oldRwheel != wheelSpeeds.rwheel){
 				UDP udp = new UDP(wheelSpeeds,address,connections);
 				try {
