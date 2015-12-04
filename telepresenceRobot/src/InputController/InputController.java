@@ -403,6 +403,26 @@ public class InputController {
 	//this function checks which component has changed and does the appropriate action for that component in Linux
 	public void PollActionLinux(Component comp, float value){
 		starttime = System.nanoTime();
+		
+		if(comp.toString().equals("W")){
+			System.out.println("W (z azerty): " + value);
+		}
+		else if(comp.toString().equals("A")){
+			System.out.println("A (q azerty): " + value);
+		}
+		else if(comp.toString().equals("S")){
+			System.out.println("S (s azerty): " + value);
+		}
+		else if(comp.toString().equals("D")){
+			System.out.println("D (d azerty): " + value);
+		}
+		else if(comp.toString().equals("Z")){
+			System.out.println("Z (z azerty): " + value);
+		}
+		else if(comp.toString().equals("Q")){
+			System.out.println("Q (q azerty): " + value);
+		}
+		
 		//Xbox Controller Left Trigger
 		if(comp.toString().equals("rz")){
 			double roundedvalue = Math.round((value*-1) * 100.0) / 100.0;
@@ -453,6 +473,8 @@ public class InputController {
 			input.jmag = Math.round(value * 100.0) / 100.0;
 			updateSpeeds();
 		}
+		
+		
 	}
 
 
