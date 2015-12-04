@@ -23,8 +23,7 @@ public class WheelSpeedConverter {
 		else if (lwheel < 0)wheelDirectionL = 0;
 		if(rwheel >= 0)wheelDirectionR = 1;
 		else if (rwheel < 0)wheelDirectionR = 0;
-
-
+		
 		//Conversion of number between 0 and 1 to between 0 and 7 (for 3 bits)
 		int lwheelC = Math.round((Math.abs(lwheel)) * 7);
 		//convert that to a 3 bit value
