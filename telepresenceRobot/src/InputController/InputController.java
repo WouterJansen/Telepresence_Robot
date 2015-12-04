@@ -32,6 +32,8 @@ public class InputController {
 	public static String OS = null;
 	public long starttime  = 0;
 	public long stoptime = 0;
+	public double leftTrigger = 0;
+	public double rightTrigger = 0;
 
 	//Constructor
 	public InputController() throws InterruptedException{
@@ -401,52 +403,26 @@ public class InputController {
 	//this function checks which component has changed and does the appropriate action for that component in Linux
 	public void PollActionLinux(Component comp, float value){
 		starttime = System.nanoTime();
-		//Xbox Controller Triggers: forward/backwards speed.
-		if(comp.toString().equals("A")){
-			System.out.println("A " + value);
+		
+		
+		
+		
+		//Xbox Controller Left Trigger
+		if(comp.toString().equals("z")){
+			double roundedvalue = Math.round((value*-1) * 100.0) / 100.0;
+			double triggervalue = (roundedvalue+1)/2;
+			leftTrigger = triggervalue;
+			
+			input.tmag = rightTrigger - leftTrigger;
+			updateSpeeds();
 		}
-		else if(comp.toString().equals("Unknown")){
-			System.out.println("Unknown " + value);
-		}
-		else if(comp.toString().equals("Left Thumb 3")){
-			System.out.println("Left Thumb 3 " + value);
-		}
-		else if(comp.toString().equals("Right Thumb 3")){
-			System.out.println("Right Thumb 3 " + value);
-		}
-		else if(comp.toString().equals("rx")){
-			System.out.println("rx " + value);
-		}
-		else if(comp.toString().equals("ry")){
-			System.out.println("ry " + value);
-		}
+		//Xbox Controller Right Trigger
 		else if(comp.toString().equals("rz")){
-			System.out.println("rz " + value);
-		}
-		else if(comp.toString().equals("pov")){
-			System.out.println("pov " + value);
-		}
-		else if(comp.toString().equals("x")){
-			System.out.println("x " + value);
-		}
-		else if(comp.toString().equals("y")){
-			System.out.println("y " + value);
-		}
-		else if(comp.toString().equals("z")){
-			System.out.println("z " + value);
-		}
-		else if(comp.toString().equals("Mode")){
-			System.out.println("mode " + value);
-		}
-		else if(comp.toString().equals("Select")){
-			System.out.println("pov " + value);
-		}
-		
-		
-		
-	
-		if(comp.toString().equals("Unknown")){
-			input.tmag = Math.round((value*-1) * 100.0) / 100.0;
+			double roundedvalue = Math.round((value*-1) * 100.0) / 100.0;
+			double triggervalue = (roundedvalue+1)/2;
+			rightTrigger = triggervalue;
+			
+			input.tmag = rightTrigger - leftTrigger;
 			updateSpeeds();
 		}
 		//Xbox Controller Left Shoulder Button: rotating around midpoint to the left.
