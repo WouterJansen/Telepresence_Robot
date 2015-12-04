@@ -31,9 +31,7 @@ public class EmbeddedController {
         		System.out.println("\n Loading modules...\n");
         		//starting video stream
         		System.out.println("\nStarting VideoStream...");
-
         		new StartStream().start();
-        		System.out.println("VideoStream started!");
                 System.out.println("\nStarting Serial Communication...");
                 // create an instance of the serial communications class
                 try {

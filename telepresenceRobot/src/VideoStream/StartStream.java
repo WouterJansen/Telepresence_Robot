@@ -28,9 +28,12 @@ public class StartStream extends Thread{
                         while ((line = reader.readLine())!= null) {
                                 output.append(line + "\n");
                         }
+                        System.out.println("\n VideoStream started!");
 
                 } catch (Exception e) {
+                		System.out.println("\n Error loading VideoStream:");
                         e.printStackTrace();
+                        
                 }
 
         }
