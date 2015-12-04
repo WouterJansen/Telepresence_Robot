@@ -560,12 +560,12 @@ public class InputController {
 		}else if(input.midmag == 1){
 			//Rotating on it's midpoint to the left
 			if(input.jmag > 0){
-				wheelSpeeds.rwheel = -0.5;
-				wheelSpeeds.lwheel = 0.5;
+				wheelSpeeds.rwheel = -1;
+				wheelSpeeds.lwheel = 1;
 				//Rotating on it's midpoint to the right
 			}else if (input.jmag < 0){
-				wheelSpeeds.rwheel = 0.5;
-				wheelSpeeds.lwheel = -0.5;
+				wheelSpeeds.rwheel = 1;
+				wheelSpeeds.lwheel = -1;
 			}	
 			if(wheelSpeeds.oldLwheel != wheelSpeeds.lwheel || wheelSpeeds.oldRwheel != wheelSpeeds.rwheel){
 				UDP udp = new UDP(wheelSpeeds,address,connections);
