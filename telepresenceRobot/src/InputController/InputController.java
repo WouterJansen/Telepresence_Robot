@@ -402,7 +402,32 @@ public class InputController {
 	public void PollActionLinux(Component comp, float value){
 		starttime = System.nanoTime();
 		//Xbox Controller Triggers: forward/backwards speed.
+		if(comp.toString().equals("A")){
+			System.out.println("A " + value);
+		}
+		else if(comp.toString().equals("Unknown")){
+			System.out.println("Unknown " + value);
+		}
+		if(comp.toString().equals("Left Thumb 3")){
+			System.out.println("Left Thumb 3 " + value);
+		}
+		if(comp.toString().equals("Right Thumb 3")){
+			System.out.println("Right Thumb 3 " + value);
+		}
 		if(comp.toString().equals("rx")){
+			System.out.println("A " + value);
+		}
+		if(comp.toString().equals("ry")){
+			System.out.println("A " + value);
+		}
+		if(comp.toString().equals("rz")){
+			System.out.println("A " + value);
+		}
+		if(comp.toString().equals("pov")){
+			System.out.println("A " + value);
+		}
+	
+		if(comp.toString().equals("Unknown")){
 			input.tmag = Math.round((value*-1) * 100.0) / 100.0;
 			updateSpeeds();
 		}
