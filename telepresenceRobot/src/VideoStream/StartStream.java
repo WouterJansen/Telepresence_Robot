@@ -11,24 +11,24 @@ public class StartStream extends Thread{
     }
 
     public void run() {
-        System.out.println("The stream is started...");
 
                 String command = "./start_stream.sh";
 
                 StringBuffer output = new StringBuffer();
 
                 Process p;
-                try {
+                try {                	
                         p = Runtime.getRuntime().exec(command);
                         p.waitFor();
                         BufferedReader reader =
                             new BufferedReader(new InputStreamReader(p.getInputStream()));
 
                         String line = "";
+                        System.out.println("\n VideoStream started!");
                         while ((line = reader.readLine())!= null) {
                                 output.append(line + "\n");
                         }
-                        System.out.println("\n VideoStream started!");
+
 
                 } catch (Exception e) {
                 		System.out.println("\n Error loading VideoStream:");
