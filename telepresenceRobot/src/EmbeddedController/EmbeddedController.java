@@ -32,7 +32,7 @@ public class EmbeddedController {
         		//starting video stream
         		System.out.println("\nStarting VideoStream...");
 
-        		new StartStream().start();
+        		//new StartStream().start();
         		System.out.println("VideoStream started!");
                 System.out.println("\nStarting Serial Communication...");
                 // create an instance of the serial communications class
@@ -91,8 +91,6 @@ public class EmbeddedController {
                 final GpioController gpio = GpioFactory.getInstance();
                 //Pin to set UART-RTS 0 => receive mode. This is GPIO_17 but the library knows it as GPIO_11. It is set to HIGH.
                 gpio.provisionDigitalOutputPin(RaspiPin.GPIO_00,"UART0-RTS",PinState.HIGH);     
-                //Pin to set HIGH for the status LED
-                gpio.provisionDigitalOutputPin(RaspiPin.GPIO_01,"LED",PinState.HIGH);  
         }       
        
    public static void main(String argv[]) throws Exception
