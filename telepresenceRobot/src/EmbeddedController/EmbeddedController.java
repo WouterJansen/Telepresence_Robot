@@ -28,21 +28,21 @@ public class EmbeddedController {
         //setup function
         public EmbeddedController() throws IOException{
         		System.out.println("Telepresence Controller - University of Antwerp");
-        		System.out.println("\n Loading modules...\n");
+                System.out.println("--------------------------------------------------------");
         		//starting video stream
-        		System.out.println("\nStarting VideoStream...");
+        		System.out.println("Starting VideoStream...");
         		new StartStream().start();
-                System.out.println("\nStarting Serial Communication...");
+                System.out.println("Starting Serial Communication...");
                 // create an instance of the serial communications class
                 try {
                 	// open the default serial port provided on the GPIO header, default rpi baud rate.
                 	serial.open(Serial.DEFAULT_COM_PORT, 115200);
-                	System.out.println("Serial Communication success!");
-                	System.out.println("\n--------------------------------------------------------");
+                	System.out.println("Serial Communication started!");
+                	System.out.println("--------------------------------------------------------");
                
                 }catch(SerialPortException ex) {
                 	System.out.println("Serial Communication failed:" + ex.getMessage());
-                	System.out.println("\n--------------------------------------------------------");
+                	System.out.println("--------------------------------------------------------");
                 	return;
                 }
                 OutToPins();

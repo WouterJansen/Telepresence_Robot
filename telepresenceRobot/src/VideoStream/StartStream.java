@@ -19,12 +19,13 @@ public class StartStream extends Thread{
                 Process p;
                 try {                	
                         p = Runtime.getRuntime().exec(command);
+                        System.out.println("VideoStream started!");
                         p.waitFor();
                         BufferedReader reader =
                             new BufferedReader(new InputStreamReader(p.getInputStream()));
 
                         String line = "";
-                        System.out.println("\n VideoStream started!");
+
                         while ((line = reader.readLine())!= null) {
                                 output.append(line + "\n");
                         }
