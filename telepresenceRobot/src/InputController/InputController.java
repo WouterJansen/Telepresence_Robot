@@ -402,7 +402,7 @@ public class InputController {
 	public void PollActionLinux(Component comp, float value){
 		starttime = System.nanoTime();
 		//Xbox Controller Triggers: forward/backwards speed.
-		if(comp.toString().equals("x")){
+		if(comp.toString().equals("Right Thumb")){
 			input.tmag = Math.round((value*-1) * 100.0) / 100.0;
 			updateSpeeds();
 		}
@@ -434,7 +434,7 @@ public class InputController {
 			}
 		}
 		//Xbox Controller Right Analog Joystick: direction input
-		else if(comp.toString().equals("X Axis")){
+		else if(comp.toString().equals("x")){
 			input.jmag = Math.round(value * 100.0) / 100.0;
 			updateSpeeds();
 		}

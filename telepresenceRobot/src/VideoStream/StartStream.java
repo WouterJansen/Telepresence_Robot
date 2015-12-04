@@ -13,7 +13,7 @@ public class StartStream extends Thread{
     public void run() {
         System.out.println("The stream is started...");
 
-                String command = "./start_stream.sh";
+                String command = "start_stream.sh";
 
                 StringBuffer output = new StringBuffer();
 
