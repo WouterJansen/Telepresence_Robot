@@ -402,12 +402,12 @@ public class InputController {
 	public void PollActionLinux(Component comp, float value){
 		starttime = System.nanoTime();
 		//Xbox Controller Triggers: forward/backwards speed.
-		if(comp.toString().equals("Right Thumb")){
+		if(comp.toString().equals("pov")){
 			input.tmag = Math.round((value*-1) * 100.0) / 100.0;
 			updateSpeeds();
 		}
 		//Xbox Controller Left Shoulder Button: rotating around midpoint to the left.
-		else if(comp.toString().equals("Button 4")){
+		else if(comp.toString().equals("Left Thumb")){
 			if(value==1.0f){
 				input.midmag = 1;
 				input.jmag = -1;
@@ -420,7 +420,7 @@ public class InputController {
 			}
 		}
 		//Xbox Controller Right Shoulder Button: rotating around midpoint to the right.
-		else if(comp.toString().equals("Button 5")){
+		else if(comp.toString().equals("Right Thumb")){
 			if(value==1.0f){
 				input.midmag = 1;
 				input.jmag = 1;
