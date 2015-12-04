@@ -408,22 +408,22 @@ public class InputController {
 		else if(comp.toString().equals("Unknown")){
 			System.out.println("Unknown " + value);
 		}
-		if(comp.toString().equals("Left Thumb 3")){
+		else if(comp.toString().equals("Left Thumb 3")){
 			System.out.println("Left Thumb 3 " + value);
 		}
-		if(comp.toString().equals("Right Thumb 3")){
+		else if(comp.toString().equals("Right Thumb 3")){
 			System.out.println("Right Thumb 3 " + value);
 		}
-		if(comp.toString().equals("rx")){
+		else if(comp.toString().equals("rx")){
 			System.out.println("A " + value);
 		}
-		if(comp.toString().equals("ry")){
+		else if(comp.toString().equals("ry")){
 			System.out.println("A " + value);
 		}
-		if(comp.toString().equals("rz")){
+		else if(comp.toString().equals("rz")){
 			System.out.println("A " + value);
 		}
-		if(comp.toString().equals("pov")){
+		else if(comp.toString().equals("pov")){
 			System.out.println("A " + value);
 		}
 	
