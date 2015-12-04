@@ -415,17 +415,19 @@ public class InputController {
 			System.out.println("Right Thumb 3 " + value);
 		}
 		else if(comp.toString().equals("rx")){
-			System.out.println("A " + value);
+			System.out.println("rx " + value);
 		}
 		else if(comp.toString().equals("ry")){
-			System.out.println("A " + value);
+			System.out.println("ry " + value);
 		}
 		else if(comp.toString().equals("rz")){
-			System.out.println("A " + value);
+			System.out.println("rz " + value);
 		}
 		else if(comp.toString().equals("pov")){
-			System.out.println("A " + value);
+			System.out.println("pov " + value);
 		}
+		
+		
 	
 		if(comp.toString().equals("Unknown")){
 			input.tmag = Math.round((value*-1) * 100.0) / 100.0;
