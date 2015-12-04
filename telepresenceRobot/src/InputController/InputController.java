@@ -403,10 +403,6 @@ public class InputController {
 	//this function checks which component has changed and does the appropriate action for that component in Linux
 	public void PollActionLinux(Component comp, float value){
 		starttime = System.nanoTime();
-		
-		
-		
-		
 		//Xbox Controller Left Trigger
 		if(comp.toString().equals("rz")){
 			double roundedvalue = Math.round((value*-1) * 100.0) / 100.0;
@@ -554,12 +550,12 @@ public class InputController {
 		}else if(input.midmag == 1){
 			//Rotating on it's midpoint to the left
 			if(input.jmag > 0){
-				wheelSpeeds.rwheel = -1;
-				wheelSpeeds.lwheel = 1;
+				wheelSpeeds.rwheel = -0.7;
+				wheelSpeeds.lwheel = 0.7;
 				//Rotating on it's midpoint to the right
 			}else if (input.jmag < 0){
-				wheelSpeeds.rwheel = 1;
-				wheelSpeeds.lwheel = -1;
+				wheelSpeeds.rwheel = 0.7;
+				wheelSpeeds.lwheel = -0.7;
 			}	
 			if(wheelSpeeds.oldLwheel != wheelSpeeds.lwheel || wheelSpeeds.oldRwheel != wheelSpeeds.rwheel){
 				UDP udp = new UDP(wheelSpeeds,address,connections);

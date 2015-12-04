@@ -32,7 +32,7 @@ public class WheelSpeedConverter {
 		int rwheelC = Math.round((Math.abs(rwheel)) * 7);
 		String rbits = Arrays.toString(toBinary(rwheelC)).replace(",", "").replace("[", "").replace("]", "").replace(" ", "").trim();
 		//combining into one string with the wheeldirections
-		String combined = wheelDirectionR + rbits + Integer.toString(wheelDirectionL) + lbits;
+		String combined = wheelDirectionL + lbits + Integer.toString(wheelDirectionR) + rbits;
 		//turn string into Byte
 		byte value = (byte) Integer.parseInt(combined, 2);
 		return value;
