@@ -408,7 +408,7 @@ public class InputController {
 		
 		
 		//Xbox Controller Left Trigger
-		if(comp.toString().equals("z")){
+		if(comp.toString().equals("rz")){
 			double roundedvalue = Math.round((value*-1) * 100.0) / 100.0;
 			double triggervalue = (roundedvalue+1)/2;
 			leftTrigger = triggervalue;
@@ -417,7 +417,7 @@ public class InputController {
 			updateSpeeds();
 		}
 		//Xbox Controller Right Trigger
-		else if(comp.toString().equals("rz")){
+		else if(comp.toString().equals("z")){
 			double roundedvalue = Math.round((value*-1) * 100.0) / 100.0;
 			double triggervalue = (roundedvalue+1)/2;
 			rightTrigger = triggervalue;
