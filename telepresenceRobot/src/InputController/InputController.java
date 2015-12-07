@@ -235,7 +235,7 @@ public class InputController {
 				updateSpeeds();
 			}
 			else if(value==0.0f){
-				keyList.remove(getIndexByname("A"));                                    //if key is released, remove it from keylist (uses helper function)
+				if(!keyList.isEmpty())keyList.remove(getIndexByname("A"));                                    //if key is released, remove it from keylist (uses helper function)
 				input.midmag = 0;
 				input.jmag = 0;
 				updateSpeeds();
@@ -251,7 +251,7 @@ public class InputController {
 				updateSpeeds();
 			}
 			else if(value==0.0f){
-				keyList.remove(getIndexByname("E"));                                    //if key is released, remove it from keylist (uses helper function)
+				if(!keyList.isEmpty())keyList.remove(getIndexByname("E"));                                    //if key is released, remove it from keylist (uses helper function)
 				input.midmag = 0;
 				input.jmag = 0;
 				updateSpeeds();
@@ -277,7 +277,7 @@ public class InputController {
 				updateSpeeds();
 			}
 			else if(value==0.0f){
-				keyList.remove(getIndexByname("Z"));                                                                    //if key is released, remove it from keylist (uses helper function)
+				if(!keyList.isEmpty())keyList.remove(getIndexByname("Z"));                                                                    //if key is released, remove it from keylist (uses helper function)
 				if(keyList.contains("Z") == false && keyList.contains("S") == false){   //if no up/down keys are pressed, reset all values.
 					input.jmag = 0;
 					input.tmag = 0;
@@ -309,7 +309,7 @@ public class InputController {
 				updateSpeeds();
 			}
 			else if(value==0.0f){
-				keyList.remove(getIndexByname("S"));                                                                    //if key is released, remove it from keylist (uses helper function)
+				if(!keyList.isEmpty())keyList.remove(getIndexByname("S"));                                                                    //if key is released, remove it from keylist (uses helper function)
 				if(keyList.contains("Z") == false && keyList.contains("S") == false){   //if no up/down keys are pressed, reset all values.
 					input.jmag = 0;
 					input.tmag = 0;
@@ -337,7 +337,7 @@ public class InputController {
 				updateSpeeds();
 			}
 			else if(value==0.0f){
-				keyList.remove(getIndexByname("Q"));                                                                    //if key is released, remove it from keylist (uses helper function)
+				if(!keyList.isEmpty())keyList.remove(getIndexByname("Q"));                                                                    //if key is released, remove it from keylist (uses helper function)
 				if(keyList.contains("Z") == false && keyList.contains("S") == false){   //if no up/down keys are pressed, reset all values.
 					input.jmag = 0;
 					input.tmag = 0;
@@ -369,7 +369,7 @@ public class InputController {
 				updateSpeeds();
 			}
 			else if(value==0.0f){
-				keyList.remove(getIndexByname("D"));                                                                    //if key is released, remove it from keylist (uses helper function)
+				if(!keyList.isEmpty())keyList.remove(getIndexByname("D"));                                                                    //if key is released, remove it from keylist (uses helper function)
 				if(keyList.contains("Z") == false && keyList.contains("S") == false){   //if no up/down keys are pressed, reset all values.
 					input.jmag = 0;
 					input.tmag = 0;
@@ -395,7 +395,7 @@ public class InputController {
 			if(_item.equals(pName))
 				return keyList.indexOf(_item);
 		}
-		return -1;
+		return 1;
 	}
 
 	//this function checks which component has changed and does the appropriate action for that component in Linux
@@ -411,7 +411,7 @@ public class InputController {
 				updateSpeeds();
 			}
 			else if(value==0.0f){
-				keyList.remove(getIndexByname("Q"));                                    //if key is released, remove it from keylist (uses helper function)
+				if(!keyList.isEmpty())keyList.remove(getIndexByname("Q"));                                    //if key is released, remove it from keylist (uses helper function)
 				input.midmag = 0;
 				input.jmag = 0;
 				updateSpeeds();
@@ -427,7 +427,7 @@ public class InputController {
 				updateSpeeds();
 			}
 			else if(value==0.0f){
-				keyList.remove(getIndexByname("E"));                                    //if key is released, remove it from keylist (uses helper function)
+				if(!keyList.isEmpty())keyList.remove(getIndexByname("E"));                                    //if key is released, remove it from keylist (uses helper function)
 				input.midmag = 0;
 				input.jmag = 0;
 				updateSpeeds();
@@ -453,7 +453,7 @@ public class InputController {
 				updateSpeeds();
 			}
 			else if(value==0.0f){
-				keyList.remove(getIndexByname("W"));                                                                    //if key is released, remove it from keylist (uses helper function)
+				if(!keyList.isEmpty())keyList.remove(getIndexByname("W"));                                                                    //if key is released, remove it from keylist (uses helper function)
 				if(keyList.contains("W") == false && keyList.contains("S") == false){   //if no up/down keys are pressed, reset all values.
 					input.jmag = 0;
 					input.tmag = 0;
@@ -485,7 +485,7 @@ public class InputController {
 				updateSpeeds();
 			}
 			else if(value==0.0f){
-				keyList.remove(getIndexByname("S"));                                                                    //if key is released, remove it from keylist (uses helper function)
+				if(!keyList.isEmpty())keyList.remove(getIndexByname("S"));                                                                    //if key is released, remove it from keylist (uses helper function)
 				if(keyList.contains("W") == false && keyList.contains("S") == false){   //if no up/down keys are pressed, reset all values.
 					input.jmag = 0;
 					input.tmag = 0;
@@ -513,7 +513,7 @@ public class InputController {
 				updateSpeeds();
 			}
 			else if(value==0.0f){
-				keyList.remove(getIndexByname("A"));                                                                    //if key is released, remove it from keylist (uses helper function)
+				if(!keyList.isEmpty())keyList.remove(getIndexByname("A"));                                                                    //if key is released, remove it from keylist (uses helper function)
 				if(keyList.contains("W") == false && keyList.contains("S") == false){   //if no up/down keys are pressed, reset all values.
 					input.jmag = 0;
 					input.tmag = 0;
@@ -545,7 +545,7 @@ public class InputController {
 				updateSpeeds();
 			}
 			else if(value==0.0f){
-				keyList.remove(getIndexByname("D"));                                                                    //if key is released, remove it from keylist (uses helper function)
+				if(!keyList.isEmpty())keyList.remove(getIndexByname("D"));                                                                    //if key is released, remove it from keylist (uses helper function)
 				if(keyList.contains("W") == false && keyList.contains("S") == false){   //if no up/down keys are pressed, reset all values.
 					input.jmag = 0;
 					input.tmag = 0;
